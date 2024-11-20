@@ -17,7 +17,7 @@ const Feature = ({icon, title, details}) => {
 
 const Features = () => {
   return (
-    <div className='px-10 py-5 flex flex-col gap-[5rem]'>
+    <div className='px-10 py-5 flex flex-col gap-[4rem] mb-[4rem]'>
         <h1 className='w-full text-center text-[40px] font-bold'>Features</h1>
         <div className='flex items-center justify-between'>
             <Feature 

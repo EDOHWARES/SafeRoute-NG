@@ -1,0 +1,31 @@
+.register form input, .register form select {
+    border: none;
+    background-color: #F9F9F9;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #E6E6E6;
+    padding: 2px 5px;
+    color: gray;
+    transition: .2s;
+}
+.register form input:hover, .register form select:hover{
+    background-color: #efefef;
+}
+.register form input:focus, .register form select:focus {
+    border-color: #E6E6E6;
+}
+
+.register form .el {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.register form .el label {
+    color: #252B42;
+}
+
+.register form button {
+    border-radius: 5px;
+    transition: .2s ease-in-out;
+}

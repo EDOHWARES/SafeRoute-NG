@@ -1,10 +1,14 @@
-.about {
+.footer {
   background-image: 
-    url('/images/aboutBg.png');
+    url('/images/footerBg.png');
   
   background-size: cover;
   background-position: center;   
   background-repeat: no-repeat;  
   height: 65vh;                 
   width: 100%;        
+}
+
+footer img {
+  width: 4rem;
 }

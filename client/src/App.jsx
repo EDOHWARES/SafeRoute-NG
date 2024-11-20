@@ -1,20 +1,17 @@
+import {Routes, Route} from 'react-router-dom';
 import { useState } from 'react'
 import './App.css';
-import Header from './components/Header/Header';
-import Hero from './components/Hero/Hero';
-import About from './components/About/About';
-import Features from './components/Features/Features';
-import Footer from './components/Footer/Footer';
+import Home from './Pages/Home/Home';
+import Register from './Pages/Register/Register';
 
 function App() {
 
   return (
     <>
-      <Header/>
-      <Hero />
-      <About />
-      <Features />
-      <Footer />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+      </Routes>
     </>
   )
 }
