@@ -47,6 +47,16 @@ const Register = () => {
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input type="text" id='confirmPassword' />
             </div>
+            <div>
+              <p className='flex items-center gap-[1rem]'>
+                <input type="checkbox" name="" id="alerts" />
+                <label htmlFor='alerts'>Subscribe to Safety Alerts(SMS)</label>
+              </p>
+              <p className='flex items-center gap-[1rem]'>
+                <input type="checkbox" name="" id="terms" />
+                <label htmlFor='terms'>Agree to Terms of Service</label>
+              </p>
+            </div>
             <img src={gradient} alt="gradient" className='absolute right-[-15rem] top-[20rem]' />
             <div className='w-full'>
               <button className='w-full bg-blue-600 text-white border border-transparent font-semibold text-center text-xl p-5 hover:border-blue-600 hover:bg-transparent hover:text-blue-600 duration-500'>Continue</button>
