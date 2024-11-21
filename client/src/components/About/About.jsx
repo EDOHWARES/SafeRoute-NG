@@ -1,23 +1,30 @@
 import React from 'react';
-import './About.css';
 import aboutImg from '../../assets/images/aboutimg.png';
 
 const About = () => {
   return (
-    <div className='about flex items-center justify-center px-10 py-5'>
-        <div className=' max-w-[1000px] flex items-start justify-between gap-[5rem]'>
-        <div className='flex flex-col items-start'>
-            <h2 className='text-[40px] font-bold text-[#2E3339]'>About us</h2>
-            <p className='text-black'>At SafeRoute Nigeria, our mission is to enhance road safety and transportation efficiency for travelers and transporters across Nigeria. Focusing on the Lagos-Kano route, we provide real-time road updates, safety alerts, and feedback collection tools to ensure smoother and safer journeys.</p>
-            <button className='bg-[#2A2E35] text-white py-2 px-4 mt-4 rounded-md'>Take a look</button>
-        </div>
+    <div className='about flex items-center justify-center px-5 sm:px-10 py-5'>
+        <div className='max-w-[1200px] w-full flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-[5rem]'>
+            {/* Text Section */}
+            <div className='flex flex-col items-center sm:items-start text-center sm:text-left'>
+                <h2 className='text-[32px] sm:text-[40px] font-bold text-[#2E3339]'>
+                    About us
+                </h2>
+                <p className='text-black sm:text-lg text-sm mt-4'>
+                    At SafeRoute Nigeria, our mission is to enhance road safety and transportation efficiency for travelers and transporters across Nigeria. Focusing on the Lagos-Kano route, we provide real-time road updates, safety alerts, and feedback collection tools to ensure smoother and safer journeys.
+                </p>
+                <button className='bg-[#2A2E35] text-white py-2 px-4 mt-4 rounded-md hover:bg-[#424749] duration-500'>
+                    Take a look
+                </button>
+            </div>
 
-        <div className='w-2/5'>
-            <img src={aboutImg} alt="about image" />
-        </div>
+            {/* Image Section */}
+            <div className='w-full sm:w-2/5 mt-6 sm:mt-0'>
+                <img src={aboutImg} alt="about image" className='w-full h-auto object-cover rounded-lg'/>
+            </div>
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;

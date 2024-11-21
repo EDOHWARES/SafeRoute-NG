@@ -19,17 +19,19 @@ const Footer = () => {
     "bg-white rounded-full w-[30px] h-[30px] flex items-center justify-center z-0 text-black";
   const listStyle = "flex items-center gap-[.7rem]";
   return (
-    <footer className="footer flex flex-col justify-between items-center px-10 py-5 pt-16 font-semibold">
+    <footer className="footer flex flex-col justify-between items-center px-5 sm:px-10 py-5 pt-16 font-semibold">
       <div className="text-white w-full">
-        <div className="max-w-[1000px] w-full flex justify-between items-start mx-auto">
-          <ul className="flex flex-col gap-[1rem]">
-            <li className="mb-[1rem]">SafeRoute-NG</li>
+        <div className="max-w-[1200px] w-full flex flex-col sm:flex-row justify-between items-start mx-auto">
+          {/* Column 1 */}
+          <ul className="flex flex-col gap-[1rem] mb-[2rem] sm:mb-0">
+            <li className="font-bold text-lg">SafeRoute-NG</li>
             <li>Route</li>
             <li>About</li>
             <li>Features</li>
           </ul>
-          <ul className="flex flex-col gap-[1rem]">
-            <li className="mb-[1rem]">Socials & Media</li>
+          {/* Column 2 */}
+          <ul className="flex flex-col gap-[1rem] mb-[2rem] sm:mb-0">
+            <li className="font-bold text-lg">Socials & Media</li>
             <li className={listStyle}>
               <span className={iconStyle}>
                 <LuInstagram />
@@ -55,42 +57,43 @@ const Footer = () => {
               <span>X</span>
             </li>
           </ul>
+          {/* Column 3 */}
           <div className="flex flex-col gap-[2rem]">
             <div>
-                <h2 className="mb-[2rem]">Registered organizations</h2>
-                <ul className="grid grid-cols-2 gap-[1rem]">
-                    <li>
-                        <img src={bri} alt="bri institute" />
-                    </li>
-                    <li>
-                        <img src={bca} alt="bca hall" />
-                    </li>
-                    <li>
-                        <img src={bni} alt="bni and co" />
-                    </li>
-                    <li>
-                        <img src={dana} alt="dana ways" />
-                    </li>
-                    <li>
-                        <img src={ovo} alt="ovo transport" />
-                    </li>
-                </ul>
+              <h2 className="font-bold text-lg mb-[2rem]">Registered Organizations</h2>
+              <ul className="grid grid-cols-2 sm:grid-cols-3 gap-[1rem]">
+                <li>
+                  <img src={bri} alt="bri institute" className="max-w-[100px] mx-auto" />
+                </li>
+                <li>
+                  <img src={bca} alt="bca hall" className="max-w-[100px] mx-auto" />
+                </li>
+                <li>
+                  <img src={bni} alt="bni and co" className="max-w-[100px] mx-auto" />
+                </li>
+                <li>
+                  <img src={dana} alt="dana ways" className="max-w-[100px] mx-auto" />
+                </li>
+                <li>
+                  <img src={ovo} alt="ovo transport" className="max-w-[100px] mx-auto" />
+                </li>
+              </ul>
             </div>
             <div>
-                <h2 className="mb-[1rem]">Partners</h2>
-                <ul className="flex items-center gap-[1rem]">
-                    <li>
-                        <img src={jt} alt="j&t co" />
-                    </li>
-                    <li>
-                        <img src={sic} alt="sic co" />
-                    </li>
-                </ul>
+              <h2 className="font-bold text-lg mb-[1rem]">Partners</h2>
+              <ul className="flex items-center gap-[1rem]">
+                <li>
+                  <img src={jt} alt="j&t co" className="max-w-[100px]" />
+                </li>
+                <li>
+                  <img src={sic} alt="sic co" className="max-w-[100px]" />
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full items-center text-center justify-center text-white ">
+      <div className="w-full text-center text-white mt-5">
         <small>Copyright © SafeRouter-NG All Right Reserved</small>
       </div>
     </footer>
