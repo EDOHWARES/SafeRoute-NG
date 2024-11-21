@@ -41,11 +41,17 @@ const Sidebar = () => {
               className="w-[20px] h-[20px]"
               aria-label="Notifications"
             />
-            <span className="hidden md:block">Notifications</span>
+            <span className="hidden md:flex items-center justify-between w-full">
+              <span>Notifications</span>
+              <span className="text-[#42BBFF] bg-[#0C3247] w-[48px] h-[20px] rounded-[26px] flex items-center justify-center">5+</span>
+            </span>
           </Link>
           <Link to="/reports" className={navItemStyle("/reports")}>
             <MdFeedback aria-label="Reports and Feedbacks" />
-            <span className="hidden md:block">Reports and Feedbacks</span>
+            <span className="hidden md:flex items-center justify-between">
+              <span>Reports and Feedbacks</span>
+              <span className="bg-[#F52D20] w-[35px] h-[20px] rounded-[26px] text-sm flex items-center justify-center text-white font-medium">3+</span>
+            </span>
           </Link>
           <Link to="/rewards" className={navItemStyle("/rewards")}>
             <FaGift aria-label="Rewards System" />

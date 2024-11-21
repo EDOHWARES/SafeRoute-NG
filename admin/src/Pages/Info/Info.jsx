@@ -3,7 +3,7 @@ import React from 'react';
 // About Component
 const Info = () => {
   return (
-    <div className="bg-[#181D2A] p-8 rounded-xl">
+    <div className="bg-transparent p-8 rounded-xl">
       {/* About Header */}
       <h1 className="text-3xl font-semibold text-white mb-6">About Our Platform</h1>
 

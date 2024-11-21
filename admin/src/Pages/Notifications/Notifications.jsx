@@ -20,7 +20,7 @@ const Notification = ({ title, message, time }) => {
 
 const Notifications = () => {
   return (
-    <div className="bg-[#181D2A] p-6">
+    <div className="bg-transparent p-6">
       <h1 className="text-3xl font-bold text-white">Notifications</h1>
       <div className="mt-6 space-y-4">
         <Notification

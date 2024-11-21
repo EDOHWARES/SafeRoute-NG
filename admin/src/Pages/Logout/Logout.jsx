@@ -14,7 +14,7 @@ const Logout = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#181D2A]">
+    <div className="flex justify-center items-center min-h-screen bg-transparent">
       <div className="bg-[#1E2533] p-8 rounded-xl text-center w-full max-w-xs">
         <h1 className="text-2xl font-semibold text-white mb-6">Are you sure you want to logout?</h1>
         <div className="space-x-4">

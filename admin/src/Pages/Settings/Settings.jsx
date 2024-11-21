@@ -28,7 +28,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="bg-[#181D2A] p-8 rounded-xl">
+    <div className="bg-transparent p-8 rounded-xl">
       <h1 className="text-3xl font-semibold text-white mb-6">Account Settings</h1>
 
       {/* Settings Form */}

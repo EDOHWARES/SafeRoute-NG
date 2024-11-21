@@ -2,7 +2,7 @@ import React from 'react';
 
 const Dashboard = () => {
   return (
-    <div className="bg-[#181D2A] text-white p-6">
+    <div className="bg-transparent text-white p-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -62,19 +62,19 @@ const Dashboard = () => {
             </thead>
             <tbody>
               <tr>
-                <td className="py-2 px-4">Stack Overflow</td>
+                <td className="py-2 px-4">Guo Transport</td>
                 <td className="py-2 px-4">
-                  <a href="https://stackoverflow.com">stackoverflow.com</a>
+                  <a href="https://stackoverflow.com">guotransport.com</a>
                 </td>
                 <td className="py-2 px-4">12</td>
                 <td className="py-2 px-4">nofollow, noopener</td>
               </tr>
               <tr>
-                <td className="py-2 px-4">YouTube</td>
+                <td className="py-2 px-4">ABC Transport PLC</td>
                 <td className="py-2 px-4">
-                  <a href="https://www.youtube.com">youtube.com</a>
+                  <a href="https://www.youtube.com">abctransport.com</a>
                 </td>
-                <td className="py-2 px-4">350</td>
+                <td className="py-2 px-4">35</td>
                 <td className="py-2 px-4">nofollow</td>
               </tr>
               <tr>
@@ -86,11 +86,11 @@ const Dashboard = () => {
                 <td className="py-2 px-4">nofollow</td>
               </tr>
               <tr>
-                <td className="py-2 px-4">Gosh William</td>
+                <td className="py-2 px-4">Chisco Transport</td>
                 <td className="py-2 px-4">
-                  <a href="https://goshwilliam.com">goshwilliam.com</a>
+                  <a href="https://goshwilliam.com">chiscotransport.com.ng</a>
                 </td>
-                <td className="py-2 px-4">157</td>
+                <td className="py-2 px-4">17</td>
                 <td className="py-2 px-4">ugc</td>
               </tr>
             </tbody>

@@ -62,7 +62,7 @@ const TransporterManagement = () => {
   };
 
   return (
-    <div className="bg-[#181D2A] p-6">
+    <div className="bg-transparent p-6">
       <h1 className="text-3xl font-bold text-white">Transporter Management</h1>
 
       {/* Transporter Form */}
