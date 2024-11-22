@@ -2,6 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import adminRouter from './routes/adminRoutes.js';
+import transporterRouter from './routes/transporterRoutes.js';
 import connectDB from './config/db.js';
 import runAdminSeed from './config/seedAdmin.js';
 
@@ -21,6 +22,7 @@ connectDB();
 
 //Endpoints
 app.use('/api/admin', adminRouter);
+app.use('/api/transporter', transporterRouter);
 app.get('/', (req, res)=> {
     res.send('API is WORKING PERFECTLY...')
 });

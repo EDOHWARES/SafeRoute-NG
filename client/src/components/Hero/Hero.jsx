@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Hero.css';
 
 const Hero = () => {
   return (
-    <section className='hero flex flex-col items-center justify-center text-center bg-cover bg-bottom bg-no-repeat h-[90vh] w-full'>
+    <section className='hero flex flex-col items-center justify-center text-center bg-cover bg-bottom bg-no-repeat h-[90vh] w-full mt-[-1rem]'>
         <h3 className='atkinson text-white text-xl sm:text-2xl md:text-3xl'>WELCOME TO</h3>
         <h1 className='allerta text-[64px] sm:text-[96px] md:text-[128px] text-white'>SafeRoute-NG</h1>
         <p className='text-white text-center mb-[2rem] px-4 sm:px-8 md:px-12 text-sm sm:text-lg md:text-xl'>
