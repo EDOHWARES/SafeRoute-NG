@@ -2,7 +2,9 @@ import TransporterModel from "../models/TransporterModel.js";
 import bcryptjs from "bcryptjs";
 import jwt from 'jsonwebtoken';
 
-// Register a new transporter
+// @desc Register a new transporter
+// @route POST /api/transporter/register
+// @access public
 export const registerTransporter = async (req, res) => {
     try {
         const {
@@ -71,7 +73,9 @@ export const registerTransporter = async (req, res) => {
 };
 
 
-// Login transporter
+// @desc Login transporter
+// @route POST /api/transporter/login
+// @access public
 export const loginTransporter = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -129,4 +133,5 @@ export const loginTransporter = async (req, res) => {
         });
     }
 };
+
 
