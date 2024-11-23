@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Notifications from "./Pages/Notifications/Notifications";
 import ReportsAndFeedback from "./Pages/ReportsAndFeedback/ReportsAndFeedback";
+import DisburseMessage from "./Pages/DisburseMessage/DisburseMessage";
 import RewardsSystem from "./Pages/RewardsSystem/RewardsSystem";
 import TransporterManagement from "./Pages/TransporterManagement/TransporterManagement";
 import Settings from "./Pages/Settings/Settings";
@@ -36,17 +37,18 @@ const App = () => {
       >
         {/* Header */}
         {!isAuthPage && (
-          <div className="header-container">
+          <div className="header-container w-full relative">
             <Header />
           </div>
         )}
 
         {/* Routes */}
-        <div className="routes-container">
+        <div className="routes-container mt-[-1rem]">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/reports" element={<ReportsAndFeedback />} />
+            <Route path="/messages" element={<DisburseMessage />} />
             <Route path="/rewards" element={<RewardsSystem />} />
             <Route path="/transport-management" element={<TransporterManagement />} />
             <Route path="/settings" element={<Settings />} />

@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // Transporter Card Component
-const TransporterCard = ({ name, vehicle, contact, status, onStatusChange }) => {
+const TransporterCard = ({
+  name,
+  vehicle,
+  contact,
+  status,
+  onToggleStatus,
+}) => {
   return (
     <div className="bg-[#1E2533] p-4 rounded-xl flex items-start space-x-4 mb-4">
       <div className="flex-1">
@@ -11,13 +18,13 @@ const TransporterCard = ({ name, vehicle, contact, status, onStatusChange }) => 
         <div className="mt-4 flex justify-between items-center">
           <div
             className={`px-3 py-1 rounded-full text-sm ${
-              status === 'Active' ? 'bg-green-500' : 'bg-red-500'
+              status === "Active" ? "bg-green-500" : "bg-red-500"
             } text-white`}
           >
             {status}
           </div>
           <button
-            onClick={() => onStatusChange(name)}
+            onClick={onToggleStatus}
             className="text-blue-400 hover:text-blue-600"
           >
             Toggle Status
@@ -30,32 +37,72 @@ const TransporterCard = ({ name, vehicle, contact, status, onStatusChange }) => 
 
 // Transporter Management Component
 const TransporterManagement = () => {
-  const [name, setName] = useState('');
-  const [vehicle, setVehicle] = useState('');
-  const [contact, setContact] = useState('');
-  const [status, setStatus] = useState('Active');
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  const [transporters, setTransporters] = useState([
-    { name: 'John Doe', vehicle: 'Truck', contact: '08012345678', status: 'Active' },
-    { name: 'Jane Smith', vehicle: 'Van', contact: '08087654321', status: 'Inactive' },
-    { name: 'Ahmed Bello', vehicle: 'Bus', contact: '08023456789', status: 'Active' },
-  ]);
+  const [name, setName] = useState("");
+  const [vehicle, setVehicle] = useState("");
+  const [contact, setContact] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [operatingArea, setOperatingArea] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [subscribeAlerts, setSubscribeAlerts] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [status, setStatus] = useState("Active");
+  const [transporters, setTransporters] = useState([]);
+
+  // Fetch registered transporters on page load
+  useEffect(() => {
+    const getRegisteredTransporters = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+        setTransporters(response.data.data);
+      } catch (error) {
+        console.error("Error fetching transporters:", error);
+      }
+    };
+
+    getRegisteredTransporters();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTransporter = { name, vehicle, contact, status };
+    const newTransporter = {
+      name,
+      vehicleType: vehicle,
+      phone: contact,
+      registrationNumber,
+      operatingArea,
+      licenseNumber,
+      email,
+      subscribeAlerts,
+      agreeToTerms,
+    };
+
     setTransporters([...transporters, newTransporter]);
-    setName('');
-    setVehicle('');
-    setContact('');
-    setStatus('Active');
+    // Reset the form
+    setName("");
+    setVehicle("");
+    setContact("");
+    setRegistrationNumber("");
+    setOperatingArea("");
+    setLicenseNumber("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setSubscribeAlerts(false);
+    setAgreeToTerms(false);
+    setStatus("Active");
   };
 
-  const handleStatusChange = (name) => {
-    setTransporters(
-      transporters.map((transporter) =>
-        transporter.name === name
-          ? { ...transporter, status: transporter.status === 'Active' ? 'Inactive' : 'Active' }
+  // Handler to toggle status
+  const toggleTransporterStatus = (index) => {
+    setTransporters((prevTransporters) =>
+      prevTransporters.map((transporter, i) =>
+        i === index
+          ? { ...transporter, status: transporter.status === "Active" ? "Inactive" : "Active" }
           : transporter
       )
     );
@@ -68,78 +115,185 @@ const TransporterManagement = () => {
       {/* Transporter Form */}
       <div className="mt-8 space-y-8">
         <div className="bg-[#2B3544] p-6 rounded-xl">
-          <h2 className="text-2xl font-semibold text-white mb-4">Add New Transporter</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4">
+            Register a Transporter
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-gray-400 text-sm">Name</label>
+              <label htmlFor="name" className="block text-gray-400 text-sm mb-1">
+                Full Name
+              </label>
               <input
                 type="text"
                 id="name"
+                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Transporter's Name"
-                className="w-full bg-[#3B4753] text-white p-2 rounded-lg"
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
               />
             </div>
 
             <div>
-              <label htmlFor="vehicle" className="block text-gray-400 text-sm">Vehicle Type</label>
+              <label htmlFor="contact" className="block text-gray-400 text-sm mb-1">
+                Phone Number
+              </label>
               <input
                 type="text"
-                id="vehicle"
-                value={vehicle}
-                onChange={(e) => setVehicle(e.target.value)}
-                placeholder="Vehicle Type"
-                className="w-full bg-[#3B4753] text-white p-2 rounded-lg"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact" className="block text-gray-400 text-sm">Contact Number</label>
-              <input
-                type="text"
+                required
                 id="contact"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="Contact Number"
-                className="w-full bg-[#3B4753] text-white p-2 rounded-lg"
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
               />
             </div>
 
             <div>
-              <label htmlFor="status" className="block text-gray-400 text-sm">Status</label>
-              <select
-                id="status"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full bg-[#3B4753] text-white p-2 rounded-lg"
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+              <label htmlFor="vehicle" className="block text-gray-400 text-sm mb-1">
+                Vehicle Type
+              </label>
+              <input
+                type="text"
+                id="vehicle"
+                required
+                value={vehicle}
+                onChange={(e) => setVehicle(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
             </div>
 
-            <button type="submit" className="w-full bg-green-500 p-3 rounded-lg text-white">
-              Add Transporter
+            <div>
+              <label htmlFor="registrationNumber" className="block text-gray-400 text-sm mb-1">
+                Vehicle Registration Number
+              </label>
+              <input
+                type="text"
+                id="registrationNumber"
+                required
+                value={registrationNumber}
+                onChange={(e) => setRegistrationNumber(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="operatingArea" className="block text-gray-400 text-sm mb-1">
+                Primary Operating Area
+              </label>
+              <input
+                type="text"
+                id="operatingArea"
+                required
+                value={operatingArea}
+                onChange={(e) => setOperatingArea(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="licenseNumber" className="block text-gray-400 text-sm mb-1">
+                Driver's License Number
+              </label>
+              <input
+                type="text"
+                id="licenseNumber"
+                required
+                value={licenseNumber}
+                onChange={(e) => setLicenseNumber(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-gray-400 text-sm mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-gray-400 text-sm mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-gray-400 text-sm mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              />
+            </div>
+
+            <div>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={subscribeAlerts}
+                  onChange={(e) => setSubscribeAlerts(e.target.checked)}
+                  className="mr-2"
+                />
+                Subscribe to Safety Alerts (SMS)
+              </label>
+            </div>
+
+            <div>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={agreeToTerms}
+                  onChange={(e) => setAgreeToTerms(e.target.checked)}
+                  required
+                  className="mr-2"
+                />
+                Agree to Terms of Service
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+            >
+              Register
             </button>
           </form>
         </div>
 
-        {/* Transporter List */}
-        <div>
-          <h2 className="text-2xl font-semibold text-white">Transporter List</h2>
-          <div className="mt-6 space-y-4">
-            {transporters.map((transporter, index) => (
-              <TransporterCard
-                key={index}
-                name={transporter.name}
-                vehicle={transporter.vehicle}
-                contact={transporter.contact}
-                status={transporter.status}
-                onStatusChange={handleStatusChange}
-              />
-            ))}
-          </div>
+        {/* Registered Transporters */}
+        <div className="bg-[#2B3544] p-6 rounded-xl">
+          <h2 className="text-2xl font-semibold text-white mb-4">
+            Registered Transporters
+          </h2>
+          {transporters.map((transporter, index) => (
+            <TransporterCard
+              key={index}
+              name={transporter.name}
+              vehicle={transporter.vehicleType}
+              contact={transporter.phone}
+              status={transporter.status || status}
+              onToggleStatus={() => toggleTransporterStatus(index)}
+            />
+          ))}
         </div>
       </div>
     </div>

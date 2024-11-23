@@ -4,6 +4,7 @@ import { MdFeedback, MdEmojiTransportation } from "react-icons/md";
 import { FaGift } from "react-icons/fa";
 import { IoSettings, IoLogOut } from "react-icons/io5";
 import { BsInfoCircleFill } from "react-icons/bs";
+import { BiSolidMessageDetail } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
@@ -53,6 +54,10 @@ const Sidebar = () => {
               <span className="bg-[#F52D20] w-[35px] h-[20px] rounded-[26px] text-sm flex items-center justify-center text-white font-medium">3+</span>
             </span>
           </Link>
+          <Link to="/messages" className={navItemStyle("/messages")}>
+            <BiSolidMessageDetail aria-label="message transporter" />
+            <span className="hidden md:block">Disburse Message</span>
+          </Link>
           <Link to="/rewards" className={navItemStyle("/rewards")}>
             <FaGift aria-label="Rewards System" />
             <span className="hidden md:block">Rewards System</span>
@@ -61,7 +66,7 @@ const Sidebar = () => {
             to="/transport-management"
             className={navItemStyle("/transport-management")}
           >
-            <MdEmojiTransportation aria-label="Transporter Management" />
+            <MdEmojiTransportation aria-label="Transporter Management" className="text-2xl" />
             <span className="hidden md:block">Transporter Management</span>
           </Link>
         </div>

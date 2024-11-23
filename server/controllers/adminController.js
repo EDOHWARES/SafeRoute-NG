@@ -5,6 +5,7 @@ import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
 import AdminModel from "../models/AdminModel.js";
+import TransporterModel from "../models/TransporterModel.js";
 
 // Secret key for JWT
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -136,13 +137,6 @@ export const sendSMS = async (req, res) => {
   }
 };
 
-// Initialize Africa's Talking Airtime Function
-const credentials = {
-  apiKey:
-    "atsk_3da9195408327908d647eff565a14073fbf0f357187ecbfe434feea4b103488d3ebfbd2b",
-  username: "sandbox",
-};
-
 // @desc Send Airtime
 // @route GET /api/admin/send-airtime
 // @access PRIVATE
@@ -211,8 +205,6 @@ export const sendAirtime = async (req, res) => {
       data: response,
     });
   } catch (error) {
-    // Log and handle error
-    console.error("Error sending airtime:", error.message);
     return res.status(500).json({
       success: false,
       message: "Failed to send airtime.",
@@ -221,3 +213,28 @@ export const sendAirtime = async (req, res) => {
   }
 };
 
+// @desc Get Registered Transporters
+// @route GET /api/admin/get-transporters
+// @access PRIVATE
+export const getRegisteredTransporters = async (req, res) => {
+    try {
+        // Fetch all transporters from the database
+        const transporters = await TransporterModel.find();
+    
+        // Return the list of transporters as a response
+        res.status(200).json({
+          success: true,
+          message: 'List of registered transporters fetched successfully.',
+          data: transporters,
+        });
+      } catch (error) {
+        // Handle errors and send an error response
+        console.error('Error fetching transporters:', error.message);
+        res.status(500).json({
+          success: false,
+          message: 'An error occurred while fetching transporters.',
+          error: error.message,
+        });
+      }
+    
+};
