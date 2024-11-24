@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Transporter Card Component
 const TransporterCard = ({
@@ -47,7 +49,6 @@ const TransporterManagement = () => {
   const [licenseNumber, setLicenseNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [subscribeAlerts, setSubscribeAlerts] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [status, setStatus] = useState("Active");
@@ -67,34 +68,49 @@ const TransporterManagement = () => {
     getRegisteredTransporters();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newTransporter = {
-      name,
-      vehicleType: vehicle,
-      phone: contact,
-      registrationNumber,
-      operatingArea,
-      licenseNumber,
-      email,
-      subscribeAlerts,
-      agreeToTerms,
-    };
 
-    setTransporters([...transporters, newTransporter]);
-    // Reset the form
-    setName("");
-    setVehicle("");
-    setContact("");
-    setRegistrationNumber("");
-    setOperatingArea("");
-    setLicenseNumber("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setSubscribeAlerts(false);
-    setAgreeToTerms(false);
-    setStatus("Active");
+    try {
+      // Make API request to register the new transporter
+      const response = await axios.post(`${apiUrl}/transporter/register`, {
+        name,
+        phone: contact,
+        vehicleType: vehicle,
+        vehicleRegistrationNumber: registrationNumber,
+        primaryOperatingArea: operatingArea,
+        driversLicenseNumber: licenseNumber,
+        email,
+        password,
+        subscribeToSafetyAlerts: subscribeAlerts,
+        agreeToTermsOfService: agreeToTerms,
+      });
+
+      if (response.data.success) {
+        // Show success toast
+        toast.success("Transporter registered successfully!");
+
+        // If successful, add the new transporter to the list
+        setTransporters((prevTransporters) => [...prevTransporters, response.data.transporter]);
+        
+        // Reset form after successful registration
+        setName("");
+        setVehicle("");
+        setContact("");
+        setRegistrationNumber("");
+        setOperatingArea("");
+        setLicenseNumber("");
+        setEmail("");
+        setPassword("");
+        setSubscribeAlerts(false);
+        setAgreeToTerms(false);
+        setStatus("Active");
+      }
+    } catch (error) {
+      // Show error toast
+      toast.error("Error registering transporter. Please try again.");
+      console.error("Error registering transporter:", error);
+    }
   };
 
   // Handler to toggle status
@@ -232,70 +248,64 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-gray-400 text-sm mb-1">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
-              />
-            </div>
-
-            <div>
-              <label className="flex items-center">
+              <label htmlFor="subscribeAlerts" className="inline-flex items-center text-gray-400">
                 <input
                   type="checkbox"
+                  id="subscribeAlerts"
                   checked={subscribeAlerts}
-                  onChange={(e) => setSubscribeAlerts(e.target.checked)}
-                  className="mr-2"
+                  onChange={() => setSubscribeAlerts(!subscribeAlerts)}
+                  className="form-checkbox"
                 />
-                Subscribe to Safety Alerts (SMS)
+                <span className="ml-2 text-sm">Subscribe to Safety Alerts</span>
               </label>
             </div>
 
             <div>
-              <label className="flex items-center">
+              <label htmlFor="agreeToTerms" className="inline-flex items-center text-gray-400">
                 <input
                   type="checkbox"
+                  id="agreeToTerms"
                   checked={agreeToTerms}
-                  onChange={(e) => setAgreeToTerms(e.target.checked)}
-                  required
-                  className="mr-2"
+                  onChange={() => setAgreeToTerms(!agreeToTerms)}
+                  className="form-checkbox"
                 />
-                Agree to Terms of Service
+                <span className="ml-2 text-sm">Agree to Terms of Service</span>
               </label>
             </div>
 
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
-            >
-              Register
-            </button>
+            <div className="flex justify-center items-center mt-4">
+              <button
+                type="submit"
+                className="bg-[#42BBFF] px-6 py-2 text-white rounded-lg"
+              >
+                Register Transporter
+              </button>
+            </div>
           </form>
         </div>
+      </div>
 
-        {/* Registered Transporters */}
-        <div className="bg-[#2B3544] p-6 rounded-xl">
-          <h2 className="text-2xl font-semibold text-white mb-4">
-            Registered Transporters
-          </h2>
+      {/* Transporter List */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold text-white mb-4">
+          Registered Transporters
+        </h2>
+        <div className="space-y-4">
           {transporters.map((transporter, index) => (
             <TransporterCard
               key={index}
               name={transporter.name}
-              vehicle={transporter.vehicleType}
+              vehicle={transporter.vehicle}
               contact={transporter.phone}
-              status={transporter.status || status}
+              status={status}
               onToggleStatus={() => toggleTransporterStatus(index)}
             />
           ))}
         </div>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

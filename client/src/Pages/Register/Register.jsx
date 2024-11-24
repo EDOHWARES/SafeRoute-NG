@@ -53,7 +53,7 @@ const Register = () => {
         subscribeToSafetyAlerts: formData.alerts,
         agreeToTermsOfService: formData.terms,
       });
-      console.log(response.data)
+      
       if (response.data.success) {
         toast.success(response.data.message || "Registration successful!");
         setFormData({

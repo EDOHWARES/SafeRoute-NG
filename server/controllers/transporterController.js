@@ -22,12 +22,12 @@ export const registerTransporter = async (req, res) => {
 
         // Check if email or phone already exists
         const existingTransporter = await TransporterModel.findOne({
-            $or: [{ email }, { phone }],
+            $or: [{ email }, { phone }, {vehicleRegistrationNumber}, {driversLicenseNumber}],
         });
         if (existingTransporter) {
             return res.status(400).json({
                 success: false,
-                message: "Email or phone number already exists.",
+                message: "One of these credentials already exists, edit it.",
             });
         }
 
