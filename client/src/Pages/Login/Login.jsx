@@ -8,7 +8,7 @@ const Login = () => {
     <div className='register flex mt-[3rem] md:mt-0 md:items-center justify-center w-full px-4 md:px-10 py-2 md:py-5 relative overflow-x-hidden h-screen'>
     <img src={gradient} alt="gradient" className='-z-10 absolute left-[-22rem] md:left-[-15rem] top-[-6rem] md:top-[-3rem]' />
     <form action="" className='w-full md:w-[70%] flex flex-col gap-[1rem]'>
-        <h1 className='text-[#252B42] font-bold text-3xl text-center mb-[1rem]'>LOGIN AS A TRANSPORTER</h1>
+        <h1 className='text-[#252B42] font-semibold md:font-bold text-xl md:text-3xl text-center mb-[1rem]'>LOGIN AS A TRANSPORTER</h1>
         <div className='el'>
           <label htmlFor="email">Email</label>
           <input type="text" id='email' />
