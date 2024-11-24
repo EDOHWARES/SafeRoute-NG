@@ -1,5 +1,6 @@
 import React from 'react';
 import aboutImg from '../../assets/images/aboutimg.png';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
@@ -13,9 +14,11 @@ const About = () => {
                 <p className='text-black sm:text-lg text-sm mt-4'>
                     At SafeRoute Nigeria, our mission is to enhance road safety and transportation efficiency for travelers and transporters across Nigeria. Focusing on the Lagos-Kano route, we provide real-time road updates, safety alerts, and feedback collection tools to ensure smoother and safer journeys.
                 </p>
-                <button className='bg-[#2A2E35] text-white py-2 px-4 mt-4 rounded-md hover:bg-[#424749] duration-500'>
-                    Take a look
-                </button>
+                <Link to={'/dashboard'} >
+                    <button className='bg-[#2A2E35] text-white py-2 px-4 mt-4 rounded-md hover:bg-[#424749] duration-500'>
+                        Take a look
+                    </button>
+                </Link>
             </div>
 
             {/* Image Section */}
