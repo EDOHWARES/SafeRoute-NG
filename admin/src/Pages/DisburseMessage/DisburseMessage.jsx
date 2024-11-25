@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // Message History Card Component
 const MessageCard = ({ user, message, date, status }) => {
@@ -11,7 +12,11 @@ const MessageCard = ({ user, message, date, status }) => {
         <div className="mt-4 flex justify-between items-center">
           <div
             className={`px-3 py-1 rounded-full text-sm ${
-              status === 'Delivered' ? 'bg-green-500' : status === 'Pending' ? 'bg-yellow-500' : 'bg-red-500'
+              status === "Delivered"
+                ? "bg-green-500"
+                : status === "Pending"
+                ? "bg-yellow-500"
+                : "bg-red-500"
             } text-white`}
           >
             {status}
@@ -24,33 +29,58 @@ const MessageCard = ({ user, message, date, status }) => {
 
 // Messaging Transporters Component
 const DisburseMessage = () => {
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
   const [sending, setSending] = useState(false);
+  const [transporters, setTransporters] = useState([]);
 
-  // Sample registered transporters
-  const transporters = ['John Doe', 'Jane Smith', 'Ahmed Bello', 'Chinonso Okafor'];
+  // Fetch registered transporters from the backend
+  useEffect(() => {
+    const fetchTransporters = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+        if (response.data.success) {
+          setTransporters(response.data.data);
+        } else {
+          console.error("Failed to fetch transporters");
+        }
+      } catch (error) {
+        console.error("Error fetching transporters:", error.message);
+      }
+    };
 
-  // Sample message history data
-  const messageHistory = [
-    { user: 'John Doe', message: 'Please update your schedule.', date: '2 hours ago', status: 'Delivered' },
-    { user: 'Jane Smith', message: 'Urgent: Check your assigned routes.', date: '1 day ago', status: 'Pending' },
-    { user: 'Ahmed Bello', message: 'Reminder: Submit your logs.', date: '3 days ago', status: 'Failed' },
-    { user: 'Chinonso Okafor', message: 'Weekly update required.', date: '5 days ago', status: 'Delivered' },
-  ];
+    fetchTransporters();
+  }, []);
 
   // Handle form submission
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
 
-    // Simulate sending message
     setSending(true);
-    setTimeout(() => {
+    setStatus("");
+
+    try {
+      const numbers = transporters.map((transporter) => transporter.phone);
+
+      const response = await axios.post(`${apiUrl}/admin/send-sms`, {
+        numbers,
+        message,
+      });
+
+      if (response.data.success) {
+        setStatus("Message sent successfully!");
+      } else {
+        setStatus(response.data.message || "Failed to send message.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error.message);
+      setStatus("Error sending message. Please try again.");
+    } finally {
       setSending(false);
-      setStatus('Message Sent to All Transporters');
-      setMessage('');
-    }, 1500);
+      setMessage("");
+    }
   };
 
   return (
@@ -60,10 +90,17 @@ const DisburseMessage = () => {
       <div className="mt-8 space-y-8">
         {/* Send Message Form */}
         <div className="bg-[#2B3544] p-6 rounded-xl">
-          <h2 className="text-2xl font-semibold text-white mb-4">Send Message to All</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4">
+            Send Message to All Transporters
+          </h2>
           <form onSubmit={handleSendMessage} className="space-y-4">
             <div>
-              <label htmlFor="message" className="block text-gray-400 text-sm mb-2">Enter Message</label>
+              <label
+                htmlFor="message"
+                className="block text-gray-400 text-sm mb-2"
+              >
+                Enter Message
+              </label>
               <textarea
                 id="message"
                 value={message}
@@ -76,11 +113,13 @@ const DisburseMessage = () => {
             <button
               type="submit"
               className={`w-full p-3 rounded-lg text-white ${
-                sending ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'
+                sending
+                  ? "bg-gray-400"
+                  : "bg-green-500 hover:bg-green-600"
               }`}
               disabled={sending}
             >
-              {sending ? 'Sending...' : 'Send Message'}
+              {sending ? "Sending..." : "Send Message"}
             </button>
           </form>
 
@@ -95,13 +134,13 @@ const DisburseMessage = () => {
         <div>
           <h2 className="text-2xl font-semibold text-white">Message History</h2>
           <div className="mt-6 space-y-4">
-            {messageHistory.map((msg, index) => (
+            {transporters.map((transporter, index) => (
               <MessageCard
                 key={index}
-                user={msg.user}
-                message={msg.message}
-                date={msg.date}
-                status={msg.status}
+                user={transporter.name} // Assumes transporters have a 'name' field
+                message={message}
+                date={new Date().toLocaleString()}
+                status="Pending"
               />
             ))}
           </div>

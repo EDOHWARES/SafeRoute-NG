@@ -18,9 +18,8 @@ const Auth = () => {
       return;
     }
 
-    // Simulated login logic (replace with actual API call)
     if (formData.username === 'admin' && formData.password === 'password') {
-      alert('Login successful!'); // Replace with navigation to admin dashboard
+      alert('Login successful!');
     } else {
       setError('Invalid username or password');
     }

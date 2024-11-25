@@ -10,7 +10,7 @@ const Logout = () => {
     sessionStorage.removeItem('authToken');
     
     // Redirect the user to the login page (or homepage)
-    navigate('/login');
+    navigate('/auth');
   };
 
   return (
