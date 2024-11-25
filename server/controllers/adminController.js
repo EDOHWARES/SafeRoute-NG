@@ -85,12 +85,14 @@ const africastalking = AfricasTalking({
 // @access PRIVATE
 export const sendSMS = async (req, res) => {
   const { numbers, message } = req.body;
+
   if (!numbers || numbers.length === 0) {
     return res.json({
       success: false,
       message: "Recipient numbers are required",
     });
   }
+
   if (!message) {
     return res.json({
       success: false,
@@ -98,17 +100,15 @@ export const sendSMS = async (req, res) => {
     });
   }
 
-  // Modify numbers to ensure they are in the correct international format
+  // Format numbers to ensure they are in the correct international format
   const validNumbers = numbers
     .map((num) => {
-      // If the number starts with '0', it's a local Nigerian number. Prepend '+234'.
       if (num.startsWith("0")) {
         return "+234" + num.substring(1); // Convert to Nigerian international format
       }
-      // If the number already starts with '+', it's assumed to be in correct format
-      return num;
+      return num; // Assume already in international format
     })
-    .filter((num) => /^[\+]?[0-9]{10,15}$/.test(num)); // Ensure it's a valid number format
+    .filter((num) => /^[\+]?[0-9]{10,15}$/.test(num)); // Validate the number format
 
   if (validNumbers.length === 0) {
     return res.json({
@@ -118,18 +118,42 @@ export const sendSMS = async (req, res) => {
   }
 
   try {
+    // Send the SMS via Africa's Talking
     const result = await africastalking.SMS.send({
       to: validNumbers,
       message: message,
       from: "86797",
     });
+
+    // Log the result
+    console.log(result);
+
+    // Update each transporter in the database
+    const updatePromises = validNumbers.map(async (phone) => {
+      // Convert international format back to local for database lookup
+      const localPhone = phone.startsWith("+234")
+        ? "0" + phone.substring(4)
+        : phone;
+
+      await TransporterModel.findOneAndUpdate(
+        { phone: localPhone },
+        {
+          $push: {
+            messagesReceived: { message, receivedAt: new Date() },
+          },
+        }
+      );
+    });
+
+    await Promise.all(updatePromises); // Ensure all updates are completed
+
     res.json({
       success: true,
-      message: "SMS sent successfully",
+      message: "SMS sent successfully, and transporters updated.",
       result,
     });
   } catch (error) {
-    console.log(error.message)
+    console.error("Error sending SMS or updating database:", error.message);
     res.json({
       success: false,
       message: "Server Error",
@@ -137,6 +161,7 @@ export const sendSMS = async (req, res) => {
     });
   }
 };
+
 
 // @desc Send Airtime
 // @route GET /api/admin/send-airtime

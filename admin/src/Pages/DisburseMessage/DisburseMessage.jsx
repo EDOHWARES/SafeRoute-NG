@@ -6,8 +6,10 @@ const MessageCard = ({ user, message, date, status }) => {
   return (
     <div className="bg-[#1E2533] p-4 rounded-xl flex items-start space-x-4 mb-4">
       <div className="flex-1">
-        <div className="text-sm text-gray-400">{date}</div>
-        <div className="text-lg font-semibold text-white">Transporter: {user}</div>
+        <div className="text-[10px] text-gray-400">{date}</div>
+        <div className="text-lg font-semibold text-white">
+          Transporter: {user}
+        </div>
         <div className="mt-2 text-gray-300">Message: {message}</div>
         <div className="mt-4 flex justify-between items-center">
           <div
@@ -113,9 +115,7 @@ const DisburseMessage = () => {
             <button
               type="submit"
               className={`w-full p-3 rounded-lg text-white ${
-                sending
-                  ? "bg-gray-400"
-                  : "bg-green-500 hover:bg-green-600"
+                sending ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
               }`}
               disabled={sending}
             >
@@ -135,13 +135,24 @@ const DisburseMessage = () => {
           <h2 className="text-2xl font-semibold text-white">Message History</h2>
           <div className="mt-6 space-y-4">
             {transporters.map((transporter, index) => (
-              <MessageCard
-                key={index}
-                user={transporter.name} // Assumes transporters have a 'name' field
-                message={message}
-                date={new Date().toLocaleString()}
-                status="Pending"
-              />
+              <div key={index}>
+                <h2 className="text-white text-base mb-2 ml-2">
+                  Transporter: {transporter.name}
+                </h2>
+                {transporter.messagesReceived
+                  .filter((msg) => msg.message !== "None") // Exclude the "None" message
+                  .map((filteredMessage, messageIndex) => (
+                    <MessageCard
+                      key={messageIndex}
+                      user={transporter.name}
+                      message={filteredMessage.message}
+                      date={new Date(
+                        filteredMessage.receivedAt
+                      ).toLocaleString()}
+                      status="Delivered"
+                    />
+                  ))}
+              </div>
             ))}
           </div>
         </div>
