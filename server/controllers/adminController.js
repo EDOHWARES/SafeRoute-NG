@@ -162,9 +162,8 @@ export const sendSMS = async (req, res) => {
   }
 };
 
-
 // @desc Send Airtime
-// @route GET /api/admin/send-airtime
+// @route POST /api/admin/send-airtime
 // @access PRIVATE
 export const sendAirtime = async (req, res) => {
   try {
@@ -207,7 +206,7 @@ export const sendAirtime = async (req, res) => {
     // Africa's Talking credentials setup
     const credentials = {
       apiKey: process.env.AFRICASTALKING_API_KEY,
-      username: "sandbox",
+      username: "sandbox", // Replace with actual username if needed
     };
     const AfricasTalkingClient = AfricasTalking(credentials);
     const airtime = AfricasTalkingClient.AIRTIME;
@@ -224,10 +223,24 @@ export const sendAirtime = async (req, res) => {
     // Send airtime
     const response = await airtime.send(options);
 
+    // Save airtime details to each transporter
+    for (let phoneNumber of numbers) { // Use the original local numbers
+      const transporter = await TransporterModel.findOne({ phone: phoneNumber });
+
+      if (transporter) {
+        transporter.airtimesReceived.push({
+          amount: parseFloat(amount),
+          receivedAt: new Date(),
+        });
+
+        await transporter.save(); // Save the updated transporter record
+      }
+    }
+
     // Handle successful response
     return res.status(200).json({
       success: true,
-      message: "Airtime sent successfully.",
+      message: "Airtime sent successfully and recorded.",
       data: response,
     });
   } catch (error) {
@@ -238,6 +251,8 @@ export const sendAirtime = async (req, res) => {
     });
   }
 };
+
+
 
 // @desc Get Registered Transporters
 // @route GET /api/admin/get-transporters
