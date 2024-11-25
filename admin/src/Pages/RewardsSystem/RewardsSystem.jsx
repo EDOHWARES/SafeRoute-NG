@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Reward History Card Component
 const AirtimeReward = ({ user, amount, date, status }) => {
@@ -12,7 +13,7 @@ const AirtimeReward = ({ user, amount, date, status }) => {
         <div className="mt-4 flex justify-between items-center">
           <div
             className={`px-3 py-1 rounded-full text-sm ${
-              status === "Processed"
+              status === "Sent"
                 ? "bg-green-500"
                 : status === "Pending"
                 ? "bg-yellow-500"
@@ -32,6 +33,19 @@ const AirtimeReward = ({ user, amount, date, status }) => {
 
 // Rewards System Component
 const RewardsSystem = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if the token exists in localStorage (or sessionStorage)
+    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
+    setIsAuthenticated(token);
+  }, []);
+
+  // If authentication state is still being checked, you can render a loading spinner or null
+  if (!isAuthenticated) {
+    return navigate('/auth'); // Optional loading state
+  }
   const [user, setUser] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");

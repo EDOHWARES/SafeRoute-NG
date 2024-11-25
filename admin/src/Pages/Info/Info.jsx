@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // About Component
 const Info = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if the token exists in localStorage (or sessionStorage)
+    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
+    setIsAuthenticated(token);
+  }, []);
+
+  // If authentication state is still being checked, you can render a loading spinner or null
+  if (!isAuthenticated) {
+    return navigate('/auth'); // Optional loading state
+  }
+
   return (
     <div className="bg-transparent p-8 rounded-xl">
       {/* About Header */}

@@ -1,5 +1,4 @@
 import AfricasTalking from "africastalking";
-// import africastalking from 'africastalking';
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";

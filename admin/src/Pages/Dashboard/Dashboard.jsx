@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if the token exists in localStorage (or sessionStorage)
+    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
+    setIsAuthenticated(token);
+  }, []);
+
+  // If authentication state is still being checked, you can render a loading spinner or null
+  if (!isAuthenticated) {
+    return navigate('/auth'); // Optional loading state
+  }
+
   return (
     <div className="bg-transparent text-white p-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <div className="text-sm text-gray-400">Last updated: 7 days ago</div>
+        <div className="text-sm text-gray-400">Last updated: 2 mins ago</div>
       </div>
 
       {/* Site Performance Section */}

@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
+import axios from 'axios'; 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 const Auth = () => {
+  const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
 
@@ -9,7 +17,7 @@ const Auth = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
@@ -18,15 +26,36 @@ const Auth = () => {
       return;
     }
 
-    if (formData.username === 'admin' && formData.password === 'password') {
-      alert('Login successful!');
-    } else {
-      setError('Invalid username or password');
+    try {
+      // Send a POST request to the backend login API
+      const response = await axios.post(`${apiUrl}/admin/login`, {
+        name: formData.username,
+        password: formData.password,
+      });
+
+      // Handle successful login
+      const { token } = response.data;
+      localStorage.setItem('adminToken', token);
+      setIsAuthenticated(true);
+
+      toast.success('Login successful!'); 
+      navigate('/');
+
+      
+
+    } catch (error) {
+      // Handle error (e.g., incorrect username or password)
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#181D2A]">
+      <ToastContainer />
       <form
         onSubmit={handleSubmit}
         className="bg-[#1E2533] p-8 rounded-xl shadow-lg w-full max-w-sm"
@@ -84,6 +113,7 @@ const Auth = () => {
           Login
         </button>
       </form>
+     
     </div>
   );
 };

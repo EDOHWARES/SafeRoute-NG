@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if the token exists in localStorage (or sessionStorage)
+    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
+    setIsAuthenticated(token);
+  }, []);
+
+  // If authentication state is still being checked, you can render a loading spinner or null
+  if (!isAuthenticated) {
+    return navigate('/auth'); // Optional loading state
+  }
 
   const handleLogout = () => {
-    // Clear authentication data (example: localStorage, sessionStorage, or cookies)
-    localStorage.removeItem('authToken'); // Or sessionStorage, depending on your setup
-    sessionStorage.removeItem('authToken');
+    localStorage.removeItem('adminToken'); 
     
     // Redirect the user to the login page (or homepage)
     navigate('/auth');

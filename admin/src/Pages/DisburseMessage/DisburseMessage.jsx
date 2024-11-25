@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Message History Card Component
 const MessageCard = ({ user, message, date, status }) => {
@@ -31,6 +32,20 @@ const MessageCard = ({ user, message, date, status }) => {
 
 // Messaging Transporters Component
 const DisburseMessage = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if the token exists in localStorage (or sessionStorage)
+    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
+    setIsAuthenticated(token);
+  }, []);
+
+  // If authentication state is still being checked, you can render a loading spinner or null
+  if (!isAuthenticated) {
+    return navigate('/auth'); // Optional loading state
+  }
+
   const apiUrl = import.meta.env.VITE_API_URL;
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
