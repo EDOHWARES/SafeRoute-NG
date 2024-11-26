@@ -19,7 +19,7 @@ const Footer = () => {
     "bg-white rounded-full w-[30px] h-[30px] flex items-center justify-center z-0 text-black";
   const listStyle = "flex items-center gap-[.7rem]";
   return (
-    <footer className="footer flex flex-col justify-between items-center px-5 sm:px-10 py-5 pt-16 font-semibold">
+    <footer id="footer" className="footer flex flex-col justify-between items-center px-5 sm:px-10 py-5 pt-16 font-semibold">
       <div className="text-white w-full">
         <div className="max-w-[1200px] w-full flex flex-col sm:flex-row justify-between items-start mx-auto">
           {/* Column 1 */}

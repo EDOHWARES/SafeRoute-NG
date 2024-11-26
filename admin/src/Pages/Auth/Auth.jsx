@@ -36,8 +36,6 @@ const Auth = () => {
       // Handle successful login
       const { token } = response.data;
       localStorage.setItem('adminToken', token);
-      setIsAuthenticated(true);
-
       toast.success('Login successful!'); 
       navigate('/');
 
@@ -45,6 +43,7 @@ const Auth = () => {
 
     } catch (error) {
       // Handle error (e.g., incorrect username or password)
+      console.log(error)
       if (error.response) {
         setError(error.response.data.message);
       } else {

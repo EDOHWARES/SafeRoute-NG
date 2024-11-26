@@ -63,7 +63,7 @@ const Header = () => {
               <li className="text-[10px] text-[#55597D]">Welcome</li>
               <li className="flex items-start gap-[.2rem]">
                 <span className="text-[16px] font-semibold">
-                  {admin ? admin.name : 'Loading...'}
+                  {admin ? admin.name : 'Unknown'}
                 </span>
                 <FaSortDown />
               </li>

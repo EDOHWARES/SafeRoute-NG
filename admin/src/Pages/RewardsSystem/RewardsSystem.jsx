@@ -34,18 +34,8 @@ const AirtimeReward = ({ user, amount, date, status }) => {
 // Rewards System Component
 const RewardsSystem = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  useEffect(() => {
-    // Check if the token exists in localStorage (or sessionStorage)
-    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
-    setIsAuthenticated(token);
-  }, []);
-
-  // If authentication state is still being checked, you can render a loading spinner or null
-  if (!isAuthenticated) {
-    return navigate('/auth'); // Optional loading state
-  }
   const [user, setUser] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
@@ -55,20 +45,29 @@ const RewardsSystem = () => {
 
   // Fetch registered transporters from the backend
   useEffect(() => {
-    const fetchTransporters = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
-        if (response.data.success) {
-          setTransporters(response.data.data);
-        } else {
-          console.error("Failed to fetch transporters");
-        }
-      } catch (error) {
-        console.error("Error fetching transporters:", error.message);
-      }
-    };
+    const token = localStorage.getItem("adminToken");
+    if (token == null) {
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(token);
+    }
 
-    fetchTransporters();
+    if (token) {
+      const fetchTransporters = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+          if (response.data.success) {
+            setTransporters(response.data.data);
+          } else {
+            console.error("Failed to fetch transporters");
+          }
+        } catch (error) {
+          console.error("Error fetching transporters:", error.message);
+        }
+      };
+
+      fetchTransporters();
+    }
   }, []);
 
   const handleSubmit = async (e) => {
@@ -109,22 +108,15 @@ const RewardsSystem = () => {
     }
   };
 
-  const rewardHistory = [
-    { user: "John Doe", amount: 500, date: "2 hours ago", status: "Processed" },
-    { user: "Jane Smith", amount: 1000, date: "1 day ago", status: "Pending" },
-    {
-      user: "Ahmed Bello",
-      amount: 200,
-      date: "3 days ago",
-      status: "Processed",
-    },
-    {
-      user: "Chinonso Okafor",
-      amount: 1500,
-      date: "5 days ago",
-      status: "Failed",
-    },
-  ];
+  if (isAuthenticated === null) {
+    // Optionally, show a loading spinner or wait until the token is checked
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    navigate("/auth");
+    return null;
+  }
 
   return (
     <div className="bg-transparent p-6">

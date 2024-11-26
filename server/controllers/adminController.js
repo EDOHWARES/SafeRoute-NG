@@ -124,9 +124,6 @@ export const sendSMS = async (req, res) => {
       from: "86797",
     });
 
-    // Log the result
-    console.log(result);
-
     // Update each transporter in the database
     const updatePromises = validNumbers.map(async (phone) => {
       // Convert international format back to local for database lookup

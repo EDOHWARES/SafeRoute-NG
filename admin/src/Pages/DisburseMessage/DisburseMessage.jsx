@@ -33,18 +33,7 @@ const MessageCard = ({ user, message, date, status }) => {
 // Messaging Transporters Component
 const DisburseMessage = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Check if the token exists in localStorage (or sessionStorage)
-    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
-    setIsAuthenticated(token);
-  }, []);
-
-  // If authentication state is still being checked, you can render a loading spinner or null
-  if (!isAuthenticated) {
-    return navigate('/auth'); // Optional loading state
-  }
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const [message, setMessage] = useState("");
@@ -54,6 +43,15 @@ const DisburseMessage = () => {
 
   // Fetch registered transporters from the backend
   useEffect(() => {
+
+    const token = localStorage.getItem("adminToken");
+    if (token == null) {
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(token)
+    }
+
+    if (token) {
     const fetchTransporters = async () => {
       try {
         const response = await axios.get(`${apiUrl}/admin/get-transporters`);
@@ -66,8 +64,9 @@ const DisburseMessage = () => {
         console.error("Error fetching transporters:", error.message);
       }
     };
-
     fetchTransporters();
+  }
+
   }, []);
 
   // Handle form submission
@@ -99,6 +98,16 @@ const DisburseMessage = () => {
       setMessage("");
     }
   };
+
+  if (isAuthenticated === null) {
+    // Optionally, show a loading spinner or wait until the token is checked
+    return <div>Loading...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    navigate("/auth");
+    return null;
+  }
 
   return (
     <div className="bg-transparent p-6">

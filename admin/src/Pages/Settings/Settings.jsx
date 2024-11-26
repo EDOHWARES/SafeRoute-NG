@@ -16,19 +16,20 @@ const InputField = ({ label, value, onChange, type = 'text' }) => (
 
 // Settings Component
 const Settings = () => {
-  const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const navigate = useNavigate();
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // Check if the token exists in localStorage (or sessionStorage)
-    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
-    setIsAuthenticated(token);
-  }, []);
+  // useEffect(() => {
+  //   // Check if the token exists in localStorage (or sessionStorage)
+  //   const token = localStorage.getItem("adminToken"); // Replace with your key for storing the token
+  //   setIsAuthenticated(token);
 
-  // If authentication state is still being checked, you can render a loading spinner or null
-  if (!isAuthenticated) {
-    return navigate('/auth'); // Optional loading state
-  }
+  //   // If authentication state is still being checked, you can render a loading spinner or null
+  //   if (!isAuthenticated) {
+  //     return navigate("/auth"); // Optional loading state
+  //   }
+  // }, []);
+
   const [username, setUsername] = useState('Edoh Emmanuel');
   const [email, setEmail] = useState('edohemmanuel4real@gmail.com');
   const [password, setPassword] = useState('');

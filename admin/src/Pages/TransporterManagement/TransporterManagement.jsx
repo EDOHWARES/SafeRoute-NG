@@ -41,18 +41,8 @@ const TransporterCard = ({
 // Transporter Management Component
 const TransporterManagement = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  useEffect(() => {
-    // Check if the token exists in localStorage (or sessionStorage)
-    const token = localStorage.getItem('adminToken');  // Replace with your key for storing the token
-    setIsAuthenticated(token);
-  }, []);
-
-  // If authentication state is still being checked, you can render a loading spinner or null
-  if (!isAuthenticated) {
-    return navigate('/auth'); // Optional loading state
-  }
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const [name, setName] = useState("");
@@ -70,16 +60,25 @@ const TransporterManagement = () => {
 
   // Fetch registered transporters on page load
   useEffect(() => {
-    const getRegisteredTransporters = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
-        setTransporters(response.data.data);
-      } catch (error) {
-        console.error("Error fetching transporters:", error);
-      }
-    };
+    const token = localStorage.getItem("adminToken");
+    if (token == null) {
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(token);
+    }
 
-    getRegisteredTransporters();
+    if (token) {
+      const getRegisteredTransporters = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+          setTransporters(response.data.data);
+        } catch (error) {
+          console.error("Error fetching transporters:", error);
+        }
+      };
+
+      getRegisteredTransporters();
+    }
   }, []);
 
   const handleSubmit = async (e) => {
@@ -105,8 +104,11 @@ const TransporterManagement = () => {
         toast.success("Transporter registered successfully!");
 
         // If successful, add the new transporter to the list
-        setTransporters((prevTransporters) => [...prevTransporters, response.data.transporter]);
-        
+        setTransporters((prevTransporters) => [
+          ...prevTransporters,
+          response.data.transporter,
+        ]);
+
         // Reset form after successful registration
         setName("");
         setVehicle("");
@@ -132,11 +134,24 @@ const TransporterManagement = () => {
     setTransporters((prevTransporters) =>
       prevTransporters.map((transporter, i) =>
         i === index
-          ? { ...transporter, status: transporter.status === "Active" ? "Inactive" : "Active" }
+          ? {
+              ...transporter,
+              status: transporter.status === "Active" ? "Inactive" : "Active",
+            }
           : transporter
       )
     );
   };
+
+  if (isAuthenticated === null) {
+    // Optionally, show a loading spinner or wait until the token is checked
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    navigate("/auth");
+    return null;
+  }
 
   return (
     <div className="bg-transparent p-6">
@@ -150,7 +165,10 @@ const TransporterManagement = () => {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="name"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Full Name
               </label>
               <input
@@ -164,7 +182,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="contact" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="contact"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Phone Number
               </label>
               <input
@@ -178,7 +199,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="vehicle" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="vehicle"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Vehicle Type
               </label>
               <input
@@ -192,7 +216,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="registrationNumber" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="registrationNumber"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Vehicle Registration Number
               </label>
               <input
@@ -206,7 +233,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="operatingArea" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="operatingArea"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Primary Operating Area
               </label>
               <input
@@ -220,7 +250,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="licenseNumber" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="licenseNumber"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Driver's License Number
               </label>
               <input
@@ -234,7 +267,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Email
               </label>
               <input
@@ -248,7 +284,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-gray-400 text-sm mb-1">
+              <label
+                htmlFor="password"
+                className="block text-gray-400 text-sm mb-1"
+              >
                 Password
               </label>
               <input
@@ -262,7 +301,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="subscribeAlerts" className="inline-flex items-center text-gray-400">
+              <label
+                htmlFor="subscribeAlerts"
+                className="inline-flex items-center text-gray-400"
+              >
                 <input
                   type="checkbox"
                   id="subscribeAlerts"
@@ -275,7 +317,10 @@ const TransporterManagement = () => {
             </div>
 
             <div>
-              <label htmlFor="agreeToTerms" className="inline-flex items-center text-gray-400">
+              <label
+                htmlFor="agreeToTerms"
+                className="inline-flex items-center text-gray-400"
+              >
                 <input
                   type="checkbox"
                   id="agreeToTerms"

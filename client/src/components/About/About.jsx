@@ -1,10 +1,11 @@
 import React from 'react';
 import aboutImg from '../../assets/images/aboutimg.png';
 import { Link } from 'react-router-dom';
+import './About.css';
 
 const About = () => {
   return (
-    <div className='about flex items-center justify-center px-5 sm:px-10 py-5'>
+    <div id='about' className='about flex items-center justify-center px-5 sm:px-10 py-5'>
         <div className='max-w-[1200px] w-full flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-[5rem]'>
             {/* Text Section */}
             <div className='flex flex-col items-center sm:items-start text-center sm:text-left'>
