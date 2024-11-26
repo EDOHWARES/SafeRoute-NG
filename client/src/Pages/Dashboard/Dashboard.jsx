@@ -1,191 +1,266 @@
-import React, { useState, useEffect } from 'react';
-import { FaTachometerAlt, FaUser, FaMoneyBillWave, FaPhoneAlt, FaSms, FaTruck, FaRoute } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import {
+  FaTachometerAlt,
+  FaUser,
+  FaMoneyBillWave,
+  FaCar,
+  FaInfoCircle,
+  FaComments,
+  FaSearch,
+} from "react-icons/fa";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import { useNavigate } from "react-router-dom";
+import ChatComponent from "../../components/Chat/Chat";
+import { Link } from "react-router-dom";
+import avatar from "../../assets/images/avatarprofile.png";
 
-// Example Map component for "Route conditions"
-const MapComponent = () => {
-  return (
-    <div className="w-full h-96 bg-gray-200">
-      <h2>Map Component</h2>
-      {/* Add your map implementation here */}
-    </div>
-  );
-};
+// Dummy Components
+const Profile = () => (
+  <div>
+    <h2 className="text-2xl font-bold mb-4">Profile</h2>
+    <p>
+      Welcome to your profile! Here you can view and update your personal
+      details.
+    </p>
+  </div>
+);
 
-// Dummy component for Trips
-const TripsComponent = () => {
-  return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Your Trips</h2>
-      <ul>
-        <li>Trip 1: Lagos to Ibadan - Completed</li>
-        <li>Trip 2: Abuja to Kano - In Progress</li>
-        <li>Trip 3: Enugu to Port Harcourt - Pending</li>
-      </ul>
-    </div>
-  );
-};
+const Earnings = () => (
+  <div>
+    <h2 className="text-2xl font-bold mb-4">Earnings</h2>
+    <p>
+      Your total earnings: <strong>$10,000</strong>
+    </p>
+  </div>
+);
 
-// Dummy component for Earnings
-const EarningsComponent = () => {
-  return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Your Earnings</h2>
-      <p>You have earned <strong>5000 Naira</strong> this month.</p>
-      <p>Your total earnings: <strong>15000 Naira</strong></p>
-    </div>
-  );
-};
+const Trips = () => (
+  <div>
+    <h2 className="text-2xl font-bold mb-4">Trips</h2>
+    <p>
+      You have completed <strong>15 trips</strong> this month.
+    </p>
+  </div>
+);
 
-// Dummy component for Profile
-const ProfileComponent = () => {
-  return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Your Profile</h2>
-      <p><strong>Name:</strong> John Doe</p>
-      <p><strong>Email:</strong> johndoe@example.com</p>
-      <p><strong>Phone:</strong> +234 123 456 7890</p>
-    </div>
-  );
-};
+const Infos = () => (
+  <div>
+    <h2 className="text-2xl font-bold mb-4">Infos</h2>
+    <p>This section contains general information and resources for drivers.</p>
+  </div>
+);
+
+// Bar Chart Data
+const barChartData = [
+  { name: "Monday", Trips: 10, Earnings: 200 },
+  { name: "Tuesday", Trips: 15, Earnings: 300 },
+  { name: "Wednesday", Trips: 8, Earnings: 150 },
+  { name: "Thursday", Trips: 12, Earnings: 250 },
+  { name: "Friday", Trips: 18, Earnings: 400 },
+  { name: "Saturday", Trips: 20, Earnings: 500 },
+  { name: "Sunday", Trips: 5, Earnings: 100 },
+];
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [selectedNav, setSelectedNav] = useState('dashboard'); // Default is 'dashboard'
-  const [transporter, setTransporter] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    airtimeIncentives: 500,
-    ussdReportCount: 5,
-    messages: [
-      { id: 1, content: "Your road report has been received. Thank you for helping us improve road safety." },
-      { id: 2, content: "Your incentive has been credited. Check your balance." }
-    ]
-  });
+  const [selectedNav, setSelectedNav] = useState("dashboard");
+  const [clickedProfile, setClickedProfile] = useState(false);
 
-  // Check if the user is authenticated
   useEffect(() => {
     const token = localStorage.getItem("transporterToken");
-    if (token == null) {
-      setIsAuthenticated(false);
-    } else {
-      setIsAuthenticated(true);
-    }
+    setIsAuthenticated(token != null);
   }, []);
 
-  // Redirect to login if not authenticated
   useEffect(() => {
     if (isAuthenticated === false) {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
-  // Loading state while checking authentication
   if (isAuthenticated === null) {
     return <div>Loading...</div>;
   }
 
-  // Render content based on the selected nav option
   const renderContent = () => {
     switch (selectedNav) {
-      case 'dashboard':
+      case "dashboard":
         return (
           <div>
-            <h1 className="text-2xl font-semibold mb-6">Welcome back, {transporter.name}!</h1>
-            <section className="bg-white p-6 rounded-md shadow-md mb-6">
-              <h2 className="text-xl font-semibold mb-4">Transporter Info</h2>
-              <p><strong>Name:</strong> {transporter.name}</p>
-              <p><strong>Email:</strong> {transporter.email}</p>
-            </section>
-            <section className="bg-white p-6 rounded-md shadow-md mb-6">
-              <h2 className="text-xl font-semibold mb-4">Airtime Incentives</h2>
-              <p>You have earned <strong>{transporter.airtimeIncentives} Naira</strong> in airtime incentives.</p>
-            </section>
-            <section className="bg-white p-6 rounded-md shadow-md mb-6">
-              <h2 className="text-xl font-semibold mb-4">USSD Report Count</h2>
-              <p>You have reported road conditions via USSD <strong>{transporter.ussdReportCount}</strong> times.</p>
-            </section>
-            <section className="bg-white p-6 rounded-md shadow-md">
-              <h2 className="text-xl font-semibold mb-4">Messages Sent</h2>
-              {transporter.messages.length > 0 ? (
-                <ul>
-                  {transporter.messages.map((msg) => (
-                    <li key={msg.id} className="mb-2">
-                      <div className="flex items-center">
-                        <FaSms className="mr-3 text-xl text-[#424749]" />
-                        <p>{msg.content}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No messages available.</p>
-              )}
-            </section>
+            {/* Info Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="p-6 bg-blue-500 text-white rounded-lg shadow-md">
+                <h3 className="text-lg font-bold">Total Earnings</h3>
+                <p className="text-2xl font-semibold">$10,000</p>
+              </div>
+              <div className="p-6 bg-green-500 text-white rounded-lg shadow-md">
+                <h3 className="text-lg font-bold">Active Trips</h3>
+                <p className="text-2xl font-semibold">12</p>
+              </div>
+              <div className="p-6 bg-orange-500 text-white rounded-lg shadow-md">
+                <h3 className="text-lg font-bold">Total Trips</h3>
+                <p className="text-2xl font-semibold">150</p>
+              </div>
+            </div>
+
+            {/* Bar Chart */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-lg font-bold mb-4">
+                Trips and Earnings Overview
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart
+                  data={barChartData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="Trips" fill="#82ca9d" />
+                  <Bar dataKey="Earnings" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         );
-      case 'routeConditions':
-        return <MapComponent />;
-      case 'trips':
-        return <TripsComponent />;
-      case 'earnings':
-        return <EarningsComponent />;
-      case 'profile':
-        return <ProfileComponent />;
+      case "profile":
+        return <Profile />;
+      case "earnings":
+        return <Earnings />;
+      case "trips":
+        return <Trips />;
+      case "infos":
+        return <Infos />;
+      case "chat":
+        return <ChatComponent />;
       default:
         return <div>Content not found.</div>;
     }
   };
 
   return (
-    <div className="flex">
-      <aside className="w-64 bg-[#424749] text-white flex flex-col min-h-screen p-6">
-        <Link to={'/'}>
-          <h2 className="text-xl font-bold mb-6">SafeRoute NG</h2>
-        </Link>
-        <nav className="flex flex-col gap-4">
-          <button
-            className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md"
-            onClick={() => setSelectedNav('dashboard')}
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="w-full bg-white shadow-md py-4 px-6 flex items-center justify-between relative">
+        <div className="flex items-center gap-10">
+          <Link to="/" className="text-2xl font-bold text-blue-500">
+            SafeRoute NG
+          </Link>
+          <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-4 py-2">
+            <FaSearch className="text-gray-500 mr-2" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="bg-transparent outline-none w-full text-sm text-gray-600"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-32">
+          <nav className="hidden md:flex gap-4">
+            <Link
+              to={"/"}
+              className="text-gray-700 hover:text-blue-500 transition"
+            >
+              Home
+            </Link>
+            <button className="text-gray-700 hover:text-blue-500 transition">
+              Notifications
+            </button>
+            <button className="text-gray-700 hover:text-blue-500 transition">
+              Settings
+            </button>
+          </nav>
+          <div className="relative">
+            <img
+              src={avatar}
+              alt="Profile Avatar"
+              className="w-10 h-10 rounded-full border border-gray-300 cursor-pointer"
+            />
+          </div>
+        </div>
+        {clickedProfile && (
+          <div
+            onClick={() => setClickedProfile(!clickedProfile)}
+            className="absolute right-0 bg-white shadow-2xl rounded-b-[5px] cursor-pointer hover:bg-gray-400 duration-500 w-[8rem] top-[4.5rem] flex items-center justify-center p-2 text-gray-800"
           >
-            <FaTachometerAlt className="mr-3 text-xl" />
-            Dashboard
-          </button>
-          <button
-            className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md"
-            onClick={() => setSelectedNav('routeConditions')}
-          >
-            <FaRoute className="mr-3 text-xl" />
-            Route conditions
-          </button>
-          <button
-            className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md"
-            onClick={() => setSelectedNav('trips')}
-          >
-            <FaTruck className="mr-3 text-xl" />
-            Trips
-          </button>
-          <button
-            className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md"
-            onClick={() => setSelectedNav('earnings')}
-          >
-            <FaMoneyBillWave className="mr-3 text-xl" />
-            Earnings
-          </button>
-          <button
-            className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md"
-            onClick={() => setSelectedNav('profile')}
-          >
-            <FaUser className="mr-3 text-xl" />
-            Profile
-          </button>
-        </nav>
-      </aside>
+            <p>Logout</p>
+          </div>
+        )}
+      </header>
 
-      <main className="flex-1 p-6">
-        {renderContent()}
-      </main>
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <aside className="w-64 bg-[#2A2D34] text-white flex flex-col p-6 shadow-lg">
+          <nav className="flex flex-col gap-4">
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "dashboard" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("dashboard")}
+            >
+              <FaTachometerAlt className="mr-3 text-xl" />
+              Dashboard
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "profile" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("profile")}
+            >
+              <FaUser className="mr-3 text-xl" />
+              Profile
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "earnings" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("earnings")}
+            >
+              <FaMoneyBillWave className="mr-3 text-xl" />
+              Earnings
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "trips" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("trips")}
+            >
+              <FaCar className="mr-3 text-xl" />
+              Trips
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "infos" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("infos")}
+            >
+              <FaInfoCircle className="mr-3 text-xl" />
+              Infos
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "chat" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("chat")}
+            >
+              <FaComments className="mr-3 text-xl" />
+              Customer care
+            </button>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 p-6">{renderContent()}</main>
+      </div>
     </div>
   );
 };
