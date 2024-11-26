@@ -17,10 +17,13 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { FaRoute } from "react-icons/fa6";
+import { MdNotificationsActive } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import ChatComponent from "../../components/Chat/Chat";
 import { Link } from "react-router-dom";
 import avatar from "../../assets/images/avatarprofile.png";
+import Map from "../../components/Map/Map";
 
 // Dummy Components
 const Profile = () => (
@@ -29,15 +32,6 @@ const Profile = () => (
     <p>
       Welcome to your profile! Here you can view and update your personal
       details.
-    </p>
-  </div>
-);
-
-const Earnings = () => (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Earnings</h2>
-    <p>
-      Your total earnings: <strong>$10,000</strong>
     </p>
   </div>
 );
@@ -135,7 +129,7 @@ const Dashboard = () => {
       case "profile":
         return <Profile />;
       case "earnings":
-        return <Earnings />;
+        return <Map />;
       case "trips":
         return <Trips />;
       case "infos":
@@ -212,21 +206,30 @@ const Dashboard = () => {
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
-                selectedNav === "profile" && "bg-gray-700"
-              }`}
-              onClick={() => setSelectedNav("profile")}
-            >
-              <FaUser className="mr-3 text-xl" />
-              Profile
-            </button>
-            <button
-              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
                 selectedNav === "earnings" && "bg-gray-700"
               }`}
               onClick={() => setSelectedNav("earnings")}
             >
-              <FaMoneyBillWave className="mr-3 text-xl" />
-              Earnings
+              <FaRoute className="mr-3 text-xl" />
+              Route Conditions
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "infos" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("infos")}
+            >
+              <MdNotificationsActive className="mr-3 text-xl" />
+              Notifications
+            </button>
+            <button
+              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
+                selectedNav === "chat" && "bg-gray-700"
+              }`}
+              onClick={() => setSelectedNav("chat")}
+            >
+              <FaComments className="mr-3 text-xl" />
+              Customer care
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -239,21 +242,12 @@ const Dashboard = () => {
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
-                selectedNav === "infos" && "bg-gray-700"
+                selectedNav === "profile" && "bg-gray-700"
               }`}
-              onClick={() => setSelectedNav("infos")}
+              onClick={() => setSelectedNav("profile")}
             >
-              <FaInfoCircle className="mr-3 text-xl" />
-              Infos
-            </button>
-            <button
-              className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
-                selectedNav === "chat" && "bg-gray-700"
-              }`}
-              onClick={() => setSelectedNav("chat")}
-            >
-              <FaComments className="mr-3 text-xl" />
-              Customer care
+              <FaUser className="mr-3 text-xl" />
+              Profile
             </button>
           </nav>
         </aside>

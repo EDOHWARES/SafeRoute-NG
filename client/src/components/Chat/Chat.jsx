@@ -40,7 +40,7 @@ const ChatComponent = () => {
       {/* Chat Header */}
       <div className="bg-blue-500 text-white px-4 py-2 rounded-t-lg flex justify-between items-center">
         <h2 className="text-lg font-bold">Chat</h2>
-        <p className="text-sm opacity-75">Dummy Chat</p>
+        <p className="text-sm opacity-75">Customer Support</p>
       </div>
 
       {/* Chat Messages */}

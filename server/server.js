@@ -5,9 +5,14 @@ import adminRouter from './routes/adminRoutes.js';
 import transporterRouter from './routes/transporterRoutes.js';
 import connectDB from './config/db.js';
 import runAdminSeed from './config/seedAdmin.js';
+import roadConditonRouter from './routes/RoadConditionRoute.js';
+import { updateRoadConditions } from './controllers/RoadConditionController.js';
 
 // Optionals
 // runAdminSeed();
+
+// Start data updates every 1 minute (60000 milliseconds)
+setInterval(updateRoadConditions, 60000); // Update road conditions every minute
 
 //Declarations
 const app = express();
@@ -21,6 +26,7 @@ app.use(cors());
 connectDB();
 
 //Endpoints
+app.use('/api/road', roadConditonRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/transporter', transporterRouter);
 app.get('/', (req, res)=> {
@@ -31,5 +37,3 @@ app.get('/', (req, res)=> {
 app.listen(port, () => {
     console.log(`server started on http://localhost:${port}`);
 });
-
-// ?retryWrites=true&w=majority&appName=Cluster0
