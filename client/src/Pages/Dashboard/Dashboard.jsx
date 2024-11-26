@@ -26,17 +26,7 @@ import avatar from "../../assets/images/avatarprofile.png";
 import Map from "../../components/Map/Map";
 import sLogo from '../../assets/images/sLogo.png';
 import Trips from "../../components/Trips/Trips";
-
-// Dummy Components
-const Profile = () => (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Profile</h2>
-    <p>
-      Welcome to your profile! Here you can view and update your personal
-      details.
-    </p>
-  </div>
-);
+import UserProfile from "../../components/UserProfile/UserProfile";
 
 const Infos = () => (
   <div>
@@ -120,7 +110,7 @@ const Dashboard = () => {
           </div>
         );
       case "profile":
-        return <Profile />;
+        return <UserProfile />;
       case "earnings":
         return <Map />;
       case "trips":
