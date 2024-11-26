@@ -3,9 +3,9 @@ import gradient from '../../assets/images/gradient.png';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 const Login = () => {
-
   const apiUrl = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +21,7 @@ const Login = () => {
 
       if (success) {
         // Save token to localStorage or context
-        localStorage.setItem('authToken', token);
+        localStorage.setItem('transporterToken', token);
 
         // Success notification
         toast.success('Login successful! Redirecting to dashboard...', {
@@ -91,6 +91,9 @@ const Login = () => {
           </button>
         </div>
       </form>
+
+      {/* ToastContainer will render the toast notifications */}
+      <ToastContainer />
     </div>
   );
 };
