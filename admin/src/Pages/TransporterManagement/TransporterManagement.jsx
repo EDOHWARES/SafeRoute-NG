@@ -51,6 +51,7 @@ const TransporterManagement = () => {
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [operatingArea, setOperatingArea] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
+  const [path, setPath] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [subscribeAlerts, setSubscribeAlerts] = useState(false);
@@ -268,6 +269,29 @@ const TransporterManagement = () => {
 
             <div>
               <label
+                htmlFor="licenseNumber"
+                className="block text-gray-400 text-sm mb-1"
+              >
+                Choose a preferred path
+              </label>
+              <select
+                id="preferredPath"
+                required
+                value={path}
+                onChange={(e) => setPath(e.target.value)}
+                className="w-full bg-[#3B4753] text-white p-2 rounded-lg outline-none border border-transparent focus:border-[#42BBFF]"
+              >
+                <option value="lagos-to-ibadan">Lagos to Ibadan</option>
+                <option value="ibadan-to-ilorin">Ibadan to Ilorin</option>
+                <option value="ilorin-to-jebba">Ilorin to Jebba</option>
+                <option value="jebba-to-minna">Jebba to Minna</option>
+                <option value="minna-to-abuja">Minna to Abuja</option>
+                <option value="abuja-to-lokoja">Abuja to Lokoja</option>
+              </select>
+            </div>
+
+            <div>
+              <label
                 htmlFor="email"
                 className="block text-gray-400 text-sm mb-1"
               >
@@ -354,7 +378,7 @@ const TransporterManagement = () => {
             <TransporterCard
               key={index}
               name={transporter.name}
-              vehicle={transporter.vehicle}
+              vehicle={transporter.vehicleType}
               contact={transporter.phone}
               status={status}
               onToggleStatus={() => toggleTransporterStatus(index)}

@@ -83,40 +83,54 @@ const africastalking = AfricasTalking({
 // @route GET /api/admin/send-sms
 // @access PRIVATE
 export const sendSMS = async (req, res) => {
-  const { numbers, message } = req.body;
+  const { selectedPath, message } = req.body;
+  console.log(selectedPath, message)
 
-  if (!numbers || numbers.length === 0) {
+  if (!selectedPath) {
     return res.json({
       success: false,
-      message: "Recipient numbers are required",
+      message: "Path is required.",
     });
   }
 
   if (!message) {
     return res.json({
       success: false,
-      message: "Message content is required",
-    });
-  }
-
-  // Format numbers to ensure they are in the correct international format
-  const validNumbers = numbers
-    .map((num) => {
-      if (num.startsWith("0")) {
-        return "+234" + num.substring(1); // Convert to Nigerian international format
-      }
-      return num; // Assume already in international format
-    })
-    .filter((num) => /^[\+]?[0-9]{10,15}$/.test(num)); // Validate the number format
-
-  if (validNumbers.length === 0) {
-    return res.json({
-      success: false,
-      message: "No valid phone numbers provided.",
+      message: "Message content is required.",
     });
   }
 
   try {
+    // Fetch transporters with the selected path
+    const transporters = await TransporterModel.find({ path: selectedPath });
+
+    if (!transporters || transporters.length === 0) {
+      return res.json({
+        success: false,
+        message: "No transporters found for the selected path.",
+      });
+    }
+
+    // Extract phone numbers of transporters
+    const numbers = transporters.map((transporter) => transporter.phone);
+
+    // Format numbers to ensure they are in the correct international format
+    const validNumbers = numbers
+      .map((num) => {
+        if (num.startsWith("0")) {
+          return "+234" + num.substring(1); // Convert to Nigerian international format
+        }
+        return num; // Assume already in international format
+      })
+      .filter((num) => /^[\+]?[0-9]{10,15}$/.test(num)); // Validate the number format
+
+    if (validNumbers.length === 0) {
+      return res.json({
+        success: false,
+        message: "No valid phone numbers provided.",
+      });
+    }
+
     // Send the SMS via Africa's Talking
     const result = await africastalking.SMS.send({
       to: validNumbers,
@@ -157,6 +171,7 @@ export const sendSMS = async (req, res) => {
     });
   }
 };
+
 
 // @desc Send Airtime
 // @route POST /api/admin/send-airtime

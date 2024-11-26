@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Register.css";
@@ -7,16 +7,16 @@ import gradient from "../../assets/images/gradient.png";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     transporterName: "",
     transporterNumber: "",
-    vehicleType: "bus",
+    vehicleType: "Bus",
     reg: "",
     operatingArea: "",
     license: "",
+    path: "Lagos to Ibadan",
     email: "",
     password: "",
     alerts: false,
@@ -48,12 +48,13 @@ const Register = () => {
         vehicleRegistrationNumber: formData.reg,
         primaryOperatingArea: formData.operatingArea,
         driversLicenseNumber: formData.license,
+        path: formData.path,
         email: formData.email,
         password: formData.password,
         subscribeToSafetyAlerts: formData.alerts,
         agreeToTermsOfService: formData.terms,
       });
-      
+
       if (response.data.success) {
         toast.success(response.data.message || "Registration successful!");
         setFormData({
@@ -63,12 +64,13 @@ const Register = () => {
           reg: "",
           operatingArea: "",
           license: "",
+          path: "Choose a preferred path",
           email: "",
           password: "",
           alerts: false,
           terms: false,
         });
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);
@@ -122,6 +124,11 @@ const Register = () => {
           >
             <option value="bus">Bus</option>
             <option value="pickup">Pickup</option>
+            <option value="truck">Truck</option>
+            <option value="van">Van</option>
+            <option value="taxi">Taxi</option>
+            <option value="tanker">Tanker</option>
+            <option value="motorbike">Motorbike</option>
           </select>
         </div>
         <div className="el">
@@ -153,6 +160,22 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+        </div>
+        <div className="el">
+          <label htmlFor="license">Choose a preferred path</label>
+          <select
+            id="PreferredPath"
+            value={formData.path}
+            onChange={handleChange}
+            required
+          >
+            <option value="Lagos to Ibadan">Lagos to Ibadan</option>
+            <option value="Ibadan to Ilorin">Ibadan to Ilorin</option>
+            <option value="Ilorin to Jeba">Ilorin to Jebba</option>
+            <option value="Jeba to Minna">Jebba to Minna</option>
+            <option value="Minna to Abuja">Minna to Abuja</option>
+            <option value="Abuja to Lokoja">Abuja to Lokoja</option>
+          </select>
         </div>
         <div className="el">
           <label htmlFor="email">Email</label>

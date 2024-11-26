@@ -8,6 +8,7 @@ const TransporterSchema = new mongoose.Schema(
     vehicleRegistrationNumber: { type: String, required: true, unique: true },
     primaryOperatingArea: { type: String, required: true },
     driversLicenseNumber: { type: String, required: true, unique: true },
+    path: {type: String, required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     subscribeToSafetyAlerts: { type: Boolean, default: false },

@@ -24,6 +24,8 @@ import ChatComponent from "../../components/Chat/Chat";
 import { Link } from "react-router-dom";
 import avatar from "../../assets/images/avatarprofile.png";
 import Map from "../../components/Map/Map";
+import sLogo from '../../assets/images/sLogo.png';
+import Trips from "../../components/Trips/Trips";
 
 // Dummy Components
 const Profile = () => (
@@ -32,15 +34,6 @@ const Profile = () => (
     <p>
       Welcome to your profile! Here you can view and update your personal
       details.
-    </p>
-  </div>
-);
-
-const Trips = () => (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Trips</h2>
-    <p>
-      You have completed <strong>15 trips</strong> this month.
     </p>
   </div>
 );
@@ -93,7 +86,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="p-6 bg-blue-500 text-white rounded-lg shadow-md">
                 <h3 className="text-lg font-bold">Total Earnings</h3>
-                <p className="text-2xl font-semibold">$10,000</p>
+                <p className="text-2xl font-semibold">₦1,000</p>
               </div>
               <div className="p-6 bg-green-500 text-white rounded-lg shadow-md">
                 <h3 className="text-lg font-bold">Active Trips</h3>
@@ -146,8 +139,9 @@ const Dashboard = () => {
       {/* Header */}
       <header className="w-full bg-white shadow-md py-4 px-6 flex items-center justify-between relative">
         <div className="flex items-center gap-10">
-          <Link to="/" className="text-2xl font-bold text-blue-500">
-            SafeRoute NG
+          <Link to={'/'} className="logo font-bold text-[#424749] text-[1.3rem] cursor-pointer flex items-center mb-4 sm:mb-0">
+            <img src={sLogo} className="w-[4rem]" alt="logo" />
+            <h1 className="ml-2">SafeRoute-NG</h1>
           </Link>
           <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-4 py-2">
             <FaSearch className="text-gray-500 mr-2" />

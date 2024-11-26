@@ -36,6 +36,7 @@ const DisburseMessage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [preferredPath, setPreferredPath] = useState('Lagos to Ibadan')
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
   const [sending, setSending] = useState(false);
@@ -43,45 +44,49 @@ const DisburseMessage = () => {
 
   // Fetch registered transporters from the backend
   useEffect(() => {
-
     const token = localStorage.getItem("adminToken");
     if (token == null) {
       setIsAuthenticated(false);
     } else {
-      setIsAuthenticated(token)
+      setIsAuthenticated(token);
     }
 
     if (token) {
-    const fetchTransporters = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
-        if (response.data.success) {
-          setTransporters(response.data.data);
-        } else {
-          console.error("Failed to fetch transporters");
+      const fetchTransporters = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+          if (response.data.success) {
+            const transporters = response.data.data
+            setTransporters(transporters);
+          } else {
+            console.error("Failed to fetch transporters");
+          }
+        } catch (error) {
+          console.error("Error fetching transporters:", error.message);
         }
-      } catch (error) {
-        console.error("Error fetching transporters:", error.message);
-      }
-    };
-    fetchTransporters();
-  }
-
+      };
+      fetchTransporters();
+    }
   }, []);
 
   // Handle form submission
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
+    if (!preferredPath) {
+      setStatus('Please pick preferred path');
+      return;
+    }
+
 
     setSending(true);
     setStatus("");
 
     try {
-      const numbers = transporters.map((transporter) => transporter.phone);
+      const selectedPath = preferredPath;
 
       const response = await axios.post(`${apiUrl}/admin/send-sms`, {
-        numbers,
+        selectedPath,
         message,
       });
 
@@ -103,7 +108,7 @@ const DisburseMessage = () => {
     // Optionally, show a loading spinner or wait until the token is checked
     return <div>Loading...</div>;
   }
-  
+
   if (!isAuthenticated) {
     navigate("/auth");
     return null;
@@ -130,10 +135,35 @@ const DisburseMessage = () => {
               <textarea
                 id="message"
                 value={message}
+                required
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type your message here..."
                 className="w-full bg-[#3B4753] border border-transparent focus:border-[#42BBFF] outline-none text-white p-2 rounded-lg h-28 resize-none"
               ></textarea>
+            </div>
+
+            <div>
+              <label
+                htmlFor="preferredPath"
+                className="block text-gray-400 text-sm mb-2"
+              >
+                Preferred Path
+              </label>
+              <select
+                id="preferredPath"
+                required
+                value={preferredPath}
+                onChange={(e) => setPreferredPath(e.target.value)}
+                className="w-full bg-[#3B4753] border border-transparent focus:border-[#42BBFF] outline-none text-white p-2 rounded-lg"
+              >
+                <option value="Lagos to Ibadan">Lagos to Ibadan</option>
+                <option value="Ibadan to Ilorin">Ibadan to Ilorin</option>
+                <option value="Ilorin to Jebba">Ilorin to Jebba</option>
+                <option value="Jebba to Mokwa">Jebba to Mokwa</option>
+                <option value="Mokwa to Abuja">Mokwa to Abuja</option>
+                <option value="Abuja to Lokoja">Abuja to Lokoja</option>
+                <option value="Lokoja to Kano">Lokoja to Kano</option>
+              </select>
             </div>
 
             <button
@@ -165,6 +195,7 @@ const DisburseMessage = () => {
                 </h2>
                 {transporter.messagesReceived
                   .filter((msg) => msg.message !== "None") // Exclude the "None" message
+                  .reverse()
                   .map((filteredMessage, messageIndex) => (
                     <MessageCard
                       key={messageIndex}
