@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import AdminModel from "../models/AdminModel.js";
 import TransporterModel from "../models/TransporterModel.js";
+import feedbackModel from "../models/FeedbackModel.js";
 
 // Secret key for JWT
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -289,4 +290,25 @@ export const getRegisteredTransporters = async (req, res) => {
         });
       }
     
+};
+
+
+// Controller to fetch all feedbacks from the database
+export const getFeedbacks = async (req, res) => {
+  try {
+    const feedbacks = await feedbackModel.find();
+
+    // If there are no feedbacks
+    if (!feedbacks || feedbacks.length === 0) {
+      return res.status(404).json({ message: "No feedbacks found." });
+    }
+
+    return res.status(200).json({
+      message: "Feedbacks fetched successfully",
+      data: feedbacks,
+    });
+  } catch (error) {
+    console.error("Error fetching feedbacks:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 };
