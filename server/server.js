@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import runAdminSeed from './config/seedAdmin.js';
 import roadConditonRouter from './routes/RoadConditionRoute.js';
 import { updateRoadConditions } from './controllers/RoadConditionController.js';
+import ussdRouter from './routes/ussdRoutes.js';
 
 // Optionals
 // runAdminSeed();
@@ -20,12 +21,14 @@ const port = 5000;
 
 //Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //db connection
 connectDB();
 
 //Endpoints
+app.use('/api/ussd', ussdRouter);
 app.use('/api/road', roadConditonRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/transporter', transporterRouter);
