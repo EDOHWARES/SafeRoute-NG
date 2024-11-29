@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import L from "leaflet"; 
+import L from "leaflet";
+import { ClipLoader } from "react-spinners";
+import { useState } from "react";
 
 // Import Leaflet CSS
 import "leaflet/dist/leaflet.css";
@@ -14,7 +16,8 @@ const RouteCondition = () => {
 
     // Add OpenStreetMap tiles
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution:
+        '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
     // Fetch road conditions from the backend
@@ -25,7 +28,10 @@ const RouteCondition = () => {
 
         // Add markers for each road condition
         conditions.forEach((condition) => {
-          const marker = L.marker([condition.location.lat, condition.location.lng]).addTo(map);
+          const marker = L.marker([
+            condition.location.lat,
+            condition.location.lng,
+          ]).addTo(map);
 
           // Create popup content
           const popupContent = `
@@ -33,7 +39,9 @@ const RouteCondition = () => {
               <h3>${condition.roadName}</h3>
               <p><strong>Condition:</strong> ${condition.condition}</p>
               <p><strong>Severity:</strong> ${condition.severity}</p>
-              <p><small>Last Updated: ${new Date(condition.lastUpdated).toLocaleString()}</small></p>
+              <p><small>Last Updated: ${new Date(
+                condition.lastUpdated
+              ).toLocaleString()}</small></p>
             </div>
           `;
 
@@ -56,9 +64,12 @@ const RouteCondition = () => {
 
   return (
     <section className="p-6">
-        <h1 className="text-3xl font-bold text-white mb-8 -mt-8">Route Conditions</h1>
-        <div id="map" style={{ height: "100vh", width: "100%" }}></div>
-    </section>);
+      <h1 className="text-3xl font-bold text-white mb-8 -mt-8">
+        Route Conditions
+      </h1>
+      <div id="map" style={{ height: "100vh", width: "100%" }}></div>
+    </section>
+  );
 };
 
 export default RouteCondition;

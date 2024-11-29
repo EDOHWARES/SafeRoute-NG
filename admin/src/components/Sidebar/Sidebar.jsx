@@ -36,7 +36,7 @@ const Sidebar = () => {
               className="w-[20px] h-[20px]"
               aria-label="Dashboard"
             />
-            <span className="hidden md:block">Dashboard</span>
+            <span className="hidden xl:block">Dashboard</span>
           </Link>
           <Link to="/notifications" className={navItemStyle("/notifications")}>
             <RiNotification3Fill
@@ -44,38 +44,38 @@ const Sidebar = () => {
               aria-label="Notifications"
             />
             <span className="hidden md:flex items-center justify-between w-full">
-              <span>Notifications</span>
+              <span className="hidden xl:block">Notifications</span>
               <span className="text-[#42BBFF] bg-[#0C3247] w-[48px] h-[20px] rounded-[26px] flex items-center justify-center">5+</span>
             </span>
           </Link>
           <Link to="/reports" className={navItemStyle("/reports")}>
             <MdFeedback aria-label="Reports and Feedbacks" />
             <span className="hidden md:flex items-center justify-between gap-[1rem]">
-              <span>Reports and Feedbacks</span>
+              <span className="hidden xl:block">Reports and Feedbacks</span>
               <span className="bg-[#F52D20] w-[35px] h-[20px] rounded-[26px] text-sm flex items-center justify-center text-white font-medium">3+</span>
             </span>
           </Link>
           <Link to="/messages" className={navItemStyle("/messages")}>
             <BiSolidMessageDetail aria-label="message transporter" />
-            <span className="hidden md:block">Disburse Message</span>
+            <span className="hidden xl:block">Disburse Message</span>
           </Link>
           <Link to="/rewards" className={navItemStyle("/rewards")}>
             <FaGift aria-label="Rewards System" />
-            <span className="hidden md:block">Rewards System</span>
+            <span className="hidden xl:block">Rewards System</span>
           </Link>
           <Link
             to="/transport-management"
             className={navItemStyle("/transport-management")}
           >
             <MdEmojiTransportation aria-label="Transporter Management" className="text-2xl" />
-            <span className="hidden md:block">Transporter Management</span>
+            <span className="hidden xl:block">Transporter Management</span>
           </Link>
           <Link
             to="/route-conditions"
             className={navItemStyle("/route-conditions")}
           >
             <SiGooglemaps aria-label="Route Conditions" className="text-2xl" />
-            <span className="hidden md:block">Route Conditions</span>
+            <span className="hidden xl:block">Route Conditions</span>
           </Link>
         </div>
 

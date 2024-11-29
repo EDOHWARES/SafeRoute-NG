@@ -14,6 +14,7 @@ import Info from "./Pages/Info/Info";
 import "./App.css";
 import Auth from "./Pages/Auth/Auth";
 import RouteCondition from "./Pages/RouteConditions/RouteCondition";
+import {HashLoader} from 'react-spinners';
 
 const App = () => {
   const location = useLocation();

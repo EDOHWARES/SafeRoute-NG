@@ -2,6 +2,8 @@ import feedbackModel from "../models/FeedbackModel.js";
 
 export const readVars = async (req, res) => {
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
+  console.log('hey');
+  
   
   let response = "";
   const input = text.split("*");
