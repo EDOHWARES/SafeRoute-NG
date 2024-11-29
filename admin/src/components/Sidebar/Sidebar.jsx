@@ -6,6 +6,7 @@ import { IoSettings, IoLogOut } from "react-icons/io5";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
+import { SiGooglemaps } from "react-icons/si";
 
 const Sidebar = () => {
   const location = useLocation(); // Tracks the current route
@@ -68,6 +69,13 @@ const Sidebar = () => {
           >
             <MdEmojiTransportation aria-label="Transporter Management" className="text-2xl" />
             <span className="hidden md:block">Transporter Management</span>
+          </Link>
+          <Link
+            to="/route-conditions"
+            className={navItemStyle("/route-conditions")}
+          >
+            <SiGooglemaps aria-label="Route Conditions" className="text-2xl" />
+            <span className="hidden md:block">Route Conditions</span>
           </Link>
         </div>
 

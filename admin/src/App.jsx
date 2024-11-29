@@ -13,6 +13,7 @@ import Logout from "./Pages/Logout/Logout";
 import Info from "./Pages/Info/Info";
 import "./App.css";
 import Auth from "./Pages/Auth/Auth";
+import RouteCondition from "./Pages/RouteConditions/RouteCondition";
 
 const App = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="/messages" element={<DisburseMessage />} />
             <Route path="/rewards" element={<RewardsSystem />} />
             <Route path="/transport-management" element={<TransporterManagement />} />
+            <Route path="/route-conditions" element={<RouteCondition />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/info" element={<Info />} />
             <Route path="/auth" element={<Auth />} />

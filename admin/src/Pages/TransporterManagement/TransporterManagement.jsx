@@ -52,7 +52,7 @@ const TransporterManagement = () => {
   });
   const [status, setStatus] = useState("Active");
   const [transporters, setTransporters] = useState([]);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   // Fetch registered transporters and validate authentication
   useEffect(() => {
@@ -64,7 +64,7 @@ const TransporterManagement = () => {
     setIsAuthenticated(true);
 
     const fetchTransporters = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       try {
         const { data } = await axios.get(`${apiUrl}/admin/get-transporters`);
         setTransporters(data.data);
@@ -245,7 +245,8 @@ const TransporterManagement = () => {
         {transporters.length === 0 ? (
           <p className="text-gray-400">No transporters registered yet.</p>
         ) : (
-          transporters.map((transporter, index) => (
+          transporters
+          .map((transporter, index) => (
             <TransporterCard
               key={transporter._id}
               name={transporter.name}
