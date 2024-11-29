@@ -50,22 +50,27 @@ const Notifications = () => {
         <Notification
           title="New Transporter Registered"
           message="A new transporter has registered for SafeRoute Nigeria. Please review their details."
-          time="2 hours ago"
+          time="1 mins ago"
+        />
+          <Notification
+          title="Special User Detected"
+          message="A logistics company just registered for SafeRoute-NG service."
+          time="7 mins ago"
         />
         <Notification
           title="Road Safety Alert"
           message="There is a reported pothole on Lekki-Epe Expressway. Please take caution."
-          time="1 day ago"
+          time="12 mins ago"
         />
         <Notification
           title="Milestone Achieved"
           message="Transporter John Doe has achieved a safety milestone and is eligible for a reward."
-          time="3 days ago"
+          time="32 mins ago"
         />
         <Notification
           title="System Update"
           message="SafeRoute Nigeria has been updated. Please check the new features."
-          time="5 days ago"
+          time="1 day ago"
         />
       </div>
     </div>

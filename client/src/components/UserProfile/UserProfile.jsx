@@ -58,7 +58,7 @@ const UserProfile = () => {
       <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
         User Profile
       </h2>
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-6 text-center">
         {/* Name */}
         <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Name:</span>
@@ -103,7 +103,7 @@ const UserProfile = () => {
 
         {/* Path */}
         <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
-          <span>Path:</span>
+          <span>Most Frequent Path:</span>
           <span className="font-medium">{profileData.path}</span>
         </div>
       </div>

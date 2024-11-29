@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { formatDistanceToNow } from "date-fns";
 
 // Reward History Card Component
 const AirtimeReward = ({ user, amount, date, status }) => {
@@ -102,7 +103,7 @@ const RewardsSystem = () => {
       user.airtimesReceived.filter((reward) => reward.amount > 0).map((reward) => ({
         user: user.name,
         amount: reward.amount,
-        date: new Date(reward.receivedAt).toLocaleString(),
+        date: formatDistanceToNow(new Date(reward.receivedAt)) + " " + 'ago',
         status: "Sent",
       }))
     );
@@ -179,7 +180,7 @@ const RewardsSystem = () => {
             <div>Loading rewards...</div>
           ) : filteredRewards.length > 0 ? (
             <div className="mt-6 space-y-4">
-              {filteredRewards.map((reward, index) => (
+              {filteredRewards.reverse().map((reward, index) => (
                 <AirtimeReward key={index} {...reward} />
               ))}
             </div>

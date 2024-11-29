@@ -44,7 +44,7 @@ const TransporterManagement = () => {
     registrationNumber: "",
     operatingArea: "",
     licenseNumber: "",
-    path: "",
+    path: "Lagos to Ibadan",
     email: "",
     password: "",
     subscribeAlerts: false,
@@ -89,12 +89,15 @@ const TransporterManagement = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(`${apiUrl}/transporter/register`, {
-        ...formFields,
+        name: formFields.name,
         phone: formFields.contact,
         vehicleType: formFields.vehicle,
         vehicleRegistrationNumber: formFields.registrationNumber,
         primaryOperatingArea: formFields.operatingArea,
         driversLicenseNumber: formFields.licenseNumber,
+        path: formFields.path,
+        email: formFields.email,
+        password: formFields.password,
         subscribeToSafetyAlerts: formFields.subscribeAlerts,
         agreeToTermsOfService: formFields.agreeToTerms,
       });

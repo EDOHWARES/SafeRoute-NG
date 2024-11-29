@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
 import "./Notifications.css";
+import { formatDistanceToNow } from "date-fns";
+
 
 const AirtimeCard = ({ ddate, transporter, amount }) => {
   return (
     <div className="w-full bgShadow p-5 rounded-md md:max-h-[12rem]">
-      <small className="text-gray-600">{ddate}</small>
+      <small className="text-gray-500">{ddate}</small>
       <p className="mb-[1rem] text-xl font-semibold text-gray-800">
         Transporter: {transporter}
       </p>
@@ -25,7 +27,7 @@ const AirtimeCard = ({ ddate, transporter, amount }) => {
 const MessageCard = ({ ddate, transporter, message }) => {
   return (
     <div className="w-full bgShadow p-5 rounded-md md:max-h-[12rem]">
-      <small className="text-gray-600">{ddate}</small>
+      <small className="text-gray-500">{ddate}</small>
       <p className="mb-[1rem] text-xl font-semibold text-gray-800">
         Transporter: {transporter}
       </p>
@@ -92,10 +94,13 @@ const Notifications = () => {
         <div className=" w-1/2">
           {profileData.airtimesReceived.length > 0 ? (
             <div className="space-y-[1rem]">
-              {profileData.airtimesReceived.map((reward, index) => (
+              <h1 className="ml-2">Airtime Incentives</h1>
+              {profileData.airtimesReceived
+              .filter((airtime) => airtime.amount !== 0)
+              .map((reward, index) => (
                 <AirtimeCard
                   key={index}
-                  ddate={new Date(reward.receivedAt).toLocaleString()}
+                  ddate={formatDistanceToNow(new Date(reward.receivedAt)) + ' ' + 'ago'}
                   transporter={profileData.name}
                   amount={reward.amount}
                 />
@@ -107,6 +112,7 @@ const Notifications = () => {
         </div>
 
         <div className="space-y-[1rem] w-1/2">
+          <h1 className="ml-2">Messages Received</h1>
           {profileData.messagesReceived
             .filter((msg) => msg.message !== "None") // Exclude the "None" message
             .reverse()
@@ -115,7 +121,7 @@ const Notifications = () => {
                 key={messageIndex}
                 transporter={profileData.name}
                 message={filteredMessage.message}
-                ddate={new Date(filteredMessage.receivedAt).toLocaleString()}
+                ddate={formatDistanceToNow(new Date(filteredMessage.receivedAt)) + ' ' + 'ago'}
               />
             ))}
         </div>

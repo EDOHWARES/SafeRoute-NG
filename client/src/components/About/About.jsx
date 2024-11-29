@@ -13,7 +13,7 @@ const About = () => {
                     About us
                 </h2>
                 <p className='text-black sm:text-lg text-sm mt-4'>
-                    At SafeRoute Nigeria, our mission is to enhance road safety and transportation efficiency for travelers and transporters across Nigeria. Focusing on the Lagos-Kano route, we provide real-time road updates, safety alerts, and feedback collection tools to ensure smoother and safer journeys.
+                    At SafeRoute Nigeria, our mission is to enhance road safety and transportation efficiency for travelers, transporters and logistics movements across Nigeria. Focusing on the Lagos-Kano route, we provide real-time road updates, safety alerts, and feedback collection tools to ensure smoother and safer journeys.
                 </p>
                 <Link to={'/dashboard'} >
                     <button className='bg-[#2A2E35] text-white py-2 px-4 mt-4 rounded-md hover:bg-[#424749] duration-500'>
