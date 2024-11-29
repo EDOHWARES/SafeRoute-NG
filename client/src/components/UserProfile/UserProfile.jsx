@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 // Profile Component
 const UserProfile = () => {
@@ -26,7 +27,6 @@ const UserProfile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response); // Log to ensure you're getting the expected response
       setProfileData(response.data.data); // Set the profile data from the response
       setLoading(false);
     } catch (err) {
@@ -40,66 +40,71 @@ const UserProfile = () => {
     fetchProfile();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>{error}</div>;
   }
 
+  if (loading) {
+    // Show spinner while fetching data
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={50} color="#42BBFF" />
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl mx-auto">
+    <div className=" p-8 rounded-xl max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
         User Profile
       </h2>
       <div className="flex flex-col space-y-6">
         {/* Name */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Name:</span>
-          <span>{profileData.name}</span>
+          <span className="font-medium">{profileData.name}</span>
         </div>
 
         {/* Phone */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Phone:</span>
-          <span>{profileData.phone}</span>
+          <span className="font-medium">{profileData.phone}</span>
         </div>
 
         {/* Email */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Email:</span>
-          <span>{profileData.email}</span>
+          <span className="font-medium">{profileData.email}</span>
         </div>
 
         {/* Vehicle Type */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Vehicle Type:</span>
-          <span>{profileData.vehicleType}</span>
+          <span className="font-medium">{profileData.vehicleType}</span>
         </div>
 
         {/* Vehicle Registration Number */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Vehicle Reg. No:</span>
-          <span>{profileData.vehicleRegistrationNumber}</span>
+          <span className="font-medium">{profileData.vehicleRegistrationNumber}</span>
         </div>
 
         {/* Primary Operating Area */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Primary Operating Area:</span>
-          <span>{profileData.primaryOperatingArea}</span>
+          <span className="font-medium">{profileData.primaryOperatingArea}</span>
         </div>
 
         {/* Driver's License Number */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Driver's License No:</span>
-          <span>{profileData.driversLicenseNumber}</span>
+          <span className="font-medium">{profileData.driversLicenseNumber}</span>
         </div>
 
         {/* Path */}
-        <div className="flex justify-between text-lg font-semibold text-gray-900">
+        <div className="flex justify-between text-lg font-semibold text-gray-900 border p-2">
           <span>Path:</span>
-          <span>{profileData.path}</span>
+          <span className="font-medium">{profileData.path}</span>
         </div>
       </div>
     </div>

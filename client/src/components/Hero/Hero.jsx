@@ -12,7 +12,7 @@ const Hero = () => {
         </p>
         <Link to='/dashboard'>
           <button className='bg-transparent text-white border border-white py-4 px-8 rounded-xl font-semibold text-xl hover:bg-white hover:text-black hover:border-white duration-500'>
-            Take a look
+            Visit Dashboard
           </button>
         </Link>
     </section>

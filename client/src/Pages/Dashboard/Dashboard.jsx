@@ -27,14 +27,7 @@ import Map from "../../components/Map/Map";
 import sLogo from '../../assets/images/sLogo.png';
 import Trips from "../../components/Trips/Trips";
 import UserProfile from "../../components/UserProfile/UserProfile";
-
-const Infos = () => (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Infos</h2>
-    <p>This section contains general information and resources for drivers.</p>
-  </div>
-);
-
+import Notifications from "../../components/Notifications/Notifications";
 // Bar Chart Data
 const barChartData = [
   { name: "Monday", Trips: 10, Earnings: 200 },
@@ -89,7 +82,7 @@ const Dashboard = () => {
             </div>
 
             {/* Bar Chart */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-bold mb-4">
                 Trips and Earnings Overview
               </h3>
@@ -115,8 +108,8 @@ const Dashboard = () => {
         return <Map />;
       case "trips":
         return <Trips />;
-      case "infos":
-        return <Infos />;
+      case "notifications":
+        return <Notifications />;
       case "chat":
         return <ChatComponent />;
       default:
@@ -177,7 +170,7 @@ const Dashboard = () => {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-[#2A2D34] text-white flex flex-col p-6 shadow-lg">
+        <aside className="w-fit md:w-64 bg-[#2A2D34] text-white flex flex-col p-6 shadow-lg">
           <nav className="flex flex-col gap-4">
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -186,7 +179,7 @@ const Dashboard = () => {
               onClick={() => setSelectedNav("dashboard")}
             >
               <FaTachometerAlt className="mr-3 text-xl" />
-              Dashboard
+              <span className="hidden md:block">Dashboard</span>
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -195,16 +188,16 @@ const Dashboard = () => {
               onClick={() => setSelectedNav("earnings")}
             >
               <FaRoute className="mr-3 text-xl" />
-              Route Conditions
+              <span className="hidden md:block">Route Conditions</span>
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
-                selectedNav === "infos" && "bg-gray-700"
+                selectedNav === "notifications" && "bg-gray-700"
               }`}
-              onClick={() => setSelectedNav("infos")}
+              onClick={() => setSelectedNav("notifications")}
             >
               <MdNotificationsActive className="mr-3 text-xl" />
-              Notifications
+              <span className="hidden md:block">Notifications</span>
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -213,7 +206,7 @@ const Dashboard = () => {
               onClick={() => setSelectedNav("chat")}
             >
               <FaComments className="mr-3 text-xl" />
-              Customer care
+              <span className="hidden md:block">Customer care</span>
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -222,7 +215,7 @@ const Dashboard = () => {
               onClick={() => setSelectedNav("trips")}
             >
               <FaCar className="mr-3 text-xl" />
-              Trips
+              <span className="hidden md:block">Trips</span>
             </button>
             <button
               className={`flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded-md transition duration-300 ${
@@ -231,7 +224,7 @@ const Dashboard = () => {
               onClick={() => setSelectedNav("profile")}
             >
               <FaUser className="mr-3 text-xl" />
-              Profile
+              <span className="hidden md:block">Profile</span>
             </button>
           </nav>
         </aside>

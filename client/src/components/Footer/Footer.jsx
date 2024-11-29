@@ -21,7 +21,7 @@ const Footer = () => {
   return (
     <footer id="footer" className="footer flex flex-col justify-between items-center px-5 sm:px-10 py-5 pt-16 font-semibold">
       <div className="text-white w-full">
-        <div className="max-w-[1200px] w-full flex flex-col sm:flex-row justify-between items-start mx-auto">
+        <div className="max-w-[1200px] flex flex-row flex-wrap justify-between gap-[2rem]">
           {/* Column 1 */}
           <ul className="flex flex-col gap-[1rem] mb-[2rem] sm:mb-0">
             <li className="font-bold text-lg">SafeRoute-NG</li>
@@ -61,7 +61,7 @@ const Footer = () => {
           <div className="flex flex-col gap-[2rem]">
             <div>
               <h2 className="font-bold text-lg mb-[2rem]">Registered Organizations</h2>
-              <ul className="grid grid-cols-2 sm:grid-cols-3 gap-[1rem]">
+              <ul className="grid grid-cols-3 gap-[1rem]">
                 <li>
                   <img src={bri} alt="bri institute" className="max-w-[100px] mx-auto" />
                 </li>
@@ -93,7 +93,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="w-full text-center text-white mt-5">
+      <div className="w-full text-left sm:text-center text-white mt-5">
         <small>Copyright © SafeRouter-NG All Right Reserved</small>
       </div>
     </footer>

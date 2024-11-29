@@ -19,7 +19,7 @@ const Features = () => {
   return (
     <div id='features' className='px-5 sm:px-10 py-5 flex flex-col gap-10 mb-[4rem]'>
         <h1 className='w-full text-center text-[32px] sm:text-[40px] font-bold'>Features</h1>
-        <div className='flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-10'>
+        <div className='flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-10 flex-wrap'>
             <Feature 
                 icon={notification}
                 title={'Real-Time Notifications'}

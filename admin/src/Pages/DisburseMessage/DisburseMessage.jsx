@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 // Message History Card Component
 const MessageCard = ({ user, message, date, status }) => {
@@ -34,9 +35,9 @@ const MessageCard = ({ user, message, date, status }) => {
 const DisburseMessage = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [preferredPath, setPreferredPath] = useState('Lagos to Ibadan')
+  const [preferredPath, setPreferredPath] = useState("Lagos to Ibadan");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
   const [sending, setSending] = useState(false);
@@ -56,16 +57,20 @@ const DisburseMessage = () => {
         try {
           const response = await axios.get(`${apiUrl}/admin/get-transporters`);
           if (response.data.success) {
-            const transporters = response.data.data
+            const transporters = response.data.data;
             setTransporters(transporters);
           } else {
             console.error("Failed to fetch transporters");
           }
         } catch (error) {
           console.error("Error fetching transporters:", error.message);
+        } finally {
+          setIsLoading(false); // Stop loading once data is fetched
         }
       };
       fetchTransporters();
+    } else {
+      setIsLoading(false); // Stop loading if not authenticated
     }
   }, []);
 
@@ -74,10 +79,9 @@ const DisburseMessage = () => {
     e.preventDefault();
     if (!message.trim()) return;
     if (!preferredPath) {
-      setStatus('Please pick preferred path');
+      setStatus("Please pick preferred path");
       return;
     }
-
 
     setSending(true);
     setStatus("");
@@ -105,13 +109,26 @@ const DisburseMessage = () => {
   };
 
   if (isAuthenticated === null) {
-    // Optionally, show a loading spinner or wait until the token is checked
-    return <div>Loading...</div>;
+    // Show spinner while checking authentication
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={50} color="#42BBFF" />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
     navigate("/auth");
     return null;
+  }
+
+  if (isLoading) {
+    // Show spinner while fetching data
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={50} color="#42BBFF" />
+      </div>
+    );
   }
 
   return (

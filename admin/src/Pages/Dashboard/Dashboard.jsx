@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (token == null) {
-      setIsAuthenticated(false);
-    } else {
-      setIsAuthenticated(token)
+    if (!token) {
+      navigate("/auth");
     }
-  }, []);
-  
-  if (isAuthenticated === null) {
-    // Optionally, show a loading spinner or wait until the token is checked
+  }, [navigate]);
+
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
     return <div>Loading...</div>;
   }
-  
-  if (!isAuthenticated) {
-    navigate("/auth");
-    return null;
-  }
-  
 
   return (
     <div className="bg-transparent text-white p-6">

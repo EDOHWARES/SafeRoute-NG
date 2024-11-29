@@ -1,0 +1,8 @@
+.christmas {
+    background-image: url('/images/christmas.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 65vh;
+    width: 100%;
+  }

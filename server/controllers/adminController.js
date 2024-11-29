@@ -293,7 +293,8 @@ export const getRegisteredTransporters = async (req, res) => {
 };
 
 
-// Controller to fetch all feedbacks from the database
+// @Desc Controller to fetch all feedbacks from the database
+// @Route GET /api/admin/getFeedbacks
 export const getFeedbacks = async (req, res) => {
   try {
     const feedbacks = await feedbackModel.find();

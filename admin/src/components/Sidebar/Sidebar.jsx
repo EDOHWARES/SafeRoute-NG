@@ -18,7 +18,7 @@ const Sidebar = () => {
      } duration-500`;
 
   return (
-    <div className="border-r border-r-[#E1E4F2] md:pr-5 py-5 h-full">
+    <div className="border-r border-r-[#E1E4F2] md:pr-5 py-5 h-full fixed">
       {/* Logo */}
       <div className="logo font-bold mb-[4rem] text-xs sm:text-sm md:text-[1.3rem] cursor-pointer flex items-center justify-center md:justify-start w-full px-1 md:pl-6">
         <h1 className="text-[#42BBFF]">SafeRoute-NG</h1>
@@ -49,7 +49,7 @@ const Sidebar = () => {
           </Link>
           <Link to="/reports" className={navItemStyle("/reports")}>
             <MdFeedback aria-label="Reports and Feedbacks" />
-            <span className="hidden md:flex items-center justify-between">
+            <span className="hidden md:flex items-center justify-between gap-[1rem]">
               <span>Reports and Feedbacks</span>
               <span className="bg-[#F52D20] w-[35px] h-[20px] rounded-[26px] text-sm flex items-center justify-center text-white font-medium">3+</span>
             </span>

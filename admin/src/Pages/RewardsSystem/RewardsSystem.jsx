@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 // Reward History Card Component
 const AirtimeReward = ({ user, amount, date, status }) => {
@@ -35,39 +36,39 @@ const AirtimeReward = ({ user, amount, date, status }) => {
 const RewardsSystem = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-
   const [user, setUser] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
   const [transporters, setTransporters] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // Fetch registered transporters from the backend
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (token == null) {
+    if (!token) {
       setIsAuthenticated(false);
-    } else {
-      setIsAuthenticated(token);
+      return;
     }
+    setIsAuthenticated(true);
 
-    if (token) {
-      const fetchTransporters = async () => {
-        try {
-          const response = await axios.get(`${apiUrl}/admin/get-transporters`);
-          if (response.data.success) {
-            setTransporters(response.data.data);
-          } else {
-            console.error("Failed to fetch transporters");
-          }
-        } catch (error) {
-          console.error("Error fetching transporters:", error.message);
+    const fetchTransporters = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${apiUrl}/admin/get-transporters`);
+        if (response.data.success) {
+          setTransporters(response.data.data);
+        } else {
+          console.error("Failed to fetch transporters");
         }
-      };
+      } catch (error) {
+        console.error("Error fetching transporters:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchTransporters();
-    }
+    fetchTransporters();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -78,44 +79,48 @@ const RewardsSystem = () => {
       return;
     }
 
-    // Prepare numbers (assuming transporters have phone numbers as part of data)
-    const selectedUser = transporters.find(
-      (transporter) => transporter.name === user
-    );
+    const selectedUser = transporters.find((transporter) => transporter.name === user);
     const numbers = selectedUser ? [selectedUser.phone] : [];
 
-    if (numbers.length === 0) {
+    if (!numbers.length) {
       setStatus("User phone number not found.");
       return;
     }
 
     setStatus("Sending Reward...");
-
     try {
-      const response = await axios.post(`${apiUrl}/admin/send-airtime`, {
-        numbers,
-        amount,
-      });
-
-      if (response.data.success) {
-        setStatus("Reward Sent Successfully");
-      } else {
-        setStatus(`Failed to send reward: ${response.data.message}`);
-      }
+      const response = await axios.post(`${apiUrl}/admin/send-airtime`, { numbers, amount });
+      setStatus(response.data.success ? "Reward Sent Successfully" : `Failed: ${response.data.message}`);
     } catch (error) {
       console.error("Error sending airtime:", error);
       setStatus("Failed to send reward. Please try again.");
     }
   };
 
-  if (isAuthenticated === null) {
-    // Optionally, show a loading spinner or wait until the token is checked
-    return <div>Loading...</div>;
-  }
+  const filteredRewards = useMemo(() => {
+    return transporters.flatMap((user) =>
+      user.airtimesReceived.filter((reward) => reward.amount > 0).map((reward) => ({
+        user: user.name,
+        amount: reward.amount,
+        date: new Date(reward.receivedAt).toLocaleString(),
+        status: "Sent",
+      }))
+    );
+  }, [transporters]);
 
+  if (isAuthenticated === null) return <div>Loading...</div>;
   if (!isAuthenticated) {
     navigate("/auth");
     return null;
+  }
+
+  if (loading) {
+    // Show spinner while fetching data
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={50} color="#42BBFF" />
+      </div>
+    );
   }
 
   return (
@@ -125,15 +130,10 @@ const RewardsSystem = () => {
       <div className="mt-8 space-y-8">
         {/* Airtime Reward Form */}
         <div className="bg-[#2B3544] p-6 rounded-xl">
-          <h2 className="text-2xl font-semibold text-white mb-4">
-            Send Airtime Reward
-          </h2>
+          <h2 className="text-2xl font-semibold text-white mb-4">Send Airtime Reward</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="user"
-                className="block text-gray-400 text-sm mb-1"
-              >
+              <label htmlFor="user" className="block text-gray-400 text-sm mb-1">
                 Select User
               </label>
               <select
@@ -152,10 +152,7 @@ const RewardsSystem = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="amount"
-                className="block text-gray-400 text-sm mb-1"
-              >
+              <label htmlFor="amount" className="block text-gray-400 text-sm mb-1">
                 Enter Airtime Amount
               </label>
               <input
@@ -168,41 +165,27 @@ const RewardsSystem = () => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-green-500 p-3 rounded-lg text-white"
-            >
+            <button type="submit" className="w-full bg-green-500 p-3 rounded-lg text-white">
               Send Reward
             </button>
           </form>
-
-          {status && (
-            <div className="mt-4 text-center text-green-500">
-              <span>{status}</span>
-            </div>
-          )}
+          {status && <div className="mt-4 text-center text-green-500">{status}</div>}
         </div>
 
         {/* Airtime Reward History */}
         <div>
-          <h2 className="text-2xl font-semibold text-white">
-            Airtime Reward History
-          </h2>
-          <div className="mt-6 space-y-4">
-            {transporters.map((user, index) =>
-              user.airtimesReceived
-                .filter((reward) => reward.amount > 0) // Filter out rewards with amount 0
-                .map((reward, rewardIndex) => (
-                  <AirtimeReward
-                    key={`${index}-${rewardIndex}`}
-                    user={user.name}
-                    amount={reward.amount}
-                    date={new Date(reward.receivedAt).toLocaleString()} // Format the date
-                    status={"Sent"} // Assuming the status is "Sent" for now
-                  />
-                ))
-            )}
-          </div>
+          <h2 className="text-2xl font-semibold text-white">Airtime Reward History</h2>
+          {loading ? (
+            <div>Loading rewards...</div>
+          ) : filteredRewards.length > 0 ? (
+            <div className="mt-6 space-y-4">
+              {filteredRewards.map((reward, index) => (
+                <AirtimeReward key={index} {...reward} />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-6 text-gray-400">No reward history available.</div>
+          )}
         </div>
       </div>
     </div>
