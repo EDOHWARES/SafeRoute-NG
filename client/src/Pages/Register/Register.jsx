@@ -16,7 +16,7 @@ const Register = () => {
     reg: "",
     operatingArea: "",
     license: "",
-    path: "Lagos to Ibadan",
+    path: "Lagos to Ibadans",
     email: "",
     password: "",
     alerts: false,
@@ -64,7 +64,7 @@ const Register = () => {
           reg: "",
           operatingArea: "",
           license: "",
-          path: "Choose a preferred path",
+          path: "Lagos to Ibadan",
           email: "",
           password: "",
           alerts: false,
@@ -162,9 +162,9 @@ const Register = () => {
           />
         </div>
         <div className="el">
-          <label htmlFor="license">Choose a preferred path</label>
+          <label htmlFor="path">Choose a preferred path</label>
           <select
-            id="PreferredPath"
+            id="path"
             value={formData.path}
             onChange={handleChange}
             required
