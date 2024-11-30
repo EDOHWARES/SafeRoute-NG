@@ -13,7 +13,7 @@ import ussdRouter from './routes/ussdRoutes.js';
 // runAdminSeed();
 
 // Start data updates every 1 minute (60000 milliseconds)
-// setInterval(updateRoadConditions, 60000); // Update road conditions every minute
+setInterval(updateRoadConditions, 60000); // Update road conditions every minute
 
 //Declarations
 const app = express();

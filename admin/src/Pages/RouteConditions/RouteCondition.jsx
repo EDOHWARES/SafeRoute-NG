@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Conditions from "./Conditions";
 
 const RouteCondition = () => {
 
@@ -63,9 +64,12 @@ const RouteCondition = () => {
   return (
     <section className="p-6">
       <h1 className="text-3xl font-bold text-white mb-8 -mt-8">
-        Route Conditions
+        Real-time Route Conditions
       </h1>
       <div id="map" style={{ height: "100vh", width: "100%" }}></div>
+      <div>
+        <Conditions />
+      </div>
     </section>
   );
 };
