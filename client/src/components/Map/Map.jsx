@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import L from "leaflet"; 
-
-// Import Leaflet CSS
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const Map = () => {
@@ -17,15 +15,23 @@ const Map = () => {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
+    // Define a custom blue icon
+    const blueIcon = L.icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/252/252025.png", // Example blue icon URL
+      iconSize: [30, 40], // Size of the icon
+      iconAnchor: [15, 40], // Point of the icon that is anchored to the marker's location
+      popupAnchor: [0, -40], // Point where the popup opens relative to the icon anchor
+    });
+
     // Fetch road conditions from the backend
-    async function fetchConditions() {
+    const fetchConditions = async () => {
       try {
         const response = await fetch(`${apiUrl}/road/conditions`);
         const conditions = await response.json();
 
         // Add markers for each road condition
         conditions.forEach((condition) => {
-          const marker = L.marker([condition.location.lat, condition.location.lng]).addTo(map);
+          const marker = L.marker([condition.location.lat, condition.location.lng], { icon: blueIcon }).addTo(map);
 
           // Create popup content
           const popupContent = `
@@ -43,12 +49,12 @@ const Map = () => {
       } catch (error) {
         console.error("Failed to fetch road conditions:", error);
       }
-    }
+    };
 
     // Load road conditions
     fetchConditions();
 
-    // Cleanup function to remove the map when the component is unmounted
+    // Cleanup function to remove the map instance on component unmount
     return () => {
       map.remove();
     };
