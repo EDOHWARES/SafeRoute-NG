@@ -6,6 +6,7 @@ import Register from './Pages/Register/Register';
 import Login from './Pages/Login/Login';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import ChristmasGreeting from './components/ChristmasGreeting/ChristmasGreeting';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 function App() {
   const [showGreeting, setShowGreeting] = useState(true);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='*' element={<ErrorPage />} />
         </Routes>
       )}
     </>
