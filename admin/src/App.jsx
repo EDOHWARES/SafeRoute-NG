@@ -33,7 +33,7 @@ const App = () => {
 
       {/* Main Content */}
       <div
-        className={`content-container flex flex-col gap-[2rem] ${
+        className={`content-container flex flex-col  2xl:-ml-[4.5rem] gap-[2rem] ${
           isAuthPage ? "w-full" : "w-4/5"
         } px-4 overflow-auto`}
       >
@@ -59,7 +59,7 @@ const App = () => {
             <Route path="/auth" element={<Auth />} />
             <Route path="/logout" element={<Logout />} />
             {/* Catch-All Route */}
-            <Route path="*" element={<h1 className="ml-10">404 - Page Not Found</h1>} />
+            <Route path="*" element={<h1>404 - Page Not Found</h1>} />
           </Routes>
         </div>
       </div>

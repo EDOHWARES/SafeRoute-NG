@@ -21,7 +21,7 @@ const Footer = () => {
   return (
     <footer id="footer" className="footer flex flex-col justify-between items-center px-5 sm:px-10 py-5 pt-16 font-semibold">
       <div className="text-white w-full">
-        <div className="max-w-[1200px] flex flex-row flex-wrap justify-between gap-[2rem]">
+        <div className="w-full max-w-[1200px] mx-auto flex flex-row flex-wrap justify-between gap-[2rem]">
           {/* Column 1 */}
           <ul className="flex flex-col gap-[1rem] mb-[2rem] sm:mb-0">
             <li className="font-bold text-lg">SafeRoute-NG</li>
